@@ -16,35 +16,36 @@
 	<script src="http://172.168.0.184/sala2/assets/grocery_crud/js/jquery_plugins/ui/jquery-ui-1.10.3.custom.min.js"></script>
 	<script src="http://172.168.0.184/sala2/assets/metro_ui/min/metro.min.js"></script>
 	
-<style type='text/css'>
-body
-{
-	font-family: Arial;
-	font-size: 14px;
-}
-a {
-    color: blue;
-    text-decoration: none;
-    font-size: 14px;
-}
-a:hover
-{
-	text-decoration: underline;
-}
-
-.flexigrid div.form-div input[type="text"], .flexigrid div.form-div input[type="password"] {
-    background: none repeat scroll 0 0 #FAFAFA;
-    border: 1px solid #AAAAAA;
-    font-size: 15px;
-    height: auto;
-    padding: 5px;
-    width: 500px;
-}
-a.chzn-single{
-	height: 50px;
-	padding: 5px;
-}
-</style>
+	<style type='text/css'>
+	body
+	{
+		font-family: Arial;
+		font-size: 14px;
+	}
+	a {
+	    color: blue;
+	    text-decoration: none;
+	    font-size: 14px;
+	}
+	a:hover
+	{
+		text-decoration: underline;
+	}
+	
+	.flexigrid div.form-div input[type="text"], .flexigrid div.form-div input[type="password"] {
+	    background: none repeat scroll 0 0 #FAFAFA;
+	    border: 1px solid #AAAAAA;
+	    font-size: 15px;
+	    height: auto;
+	    padding: 5px;
+	    width: 500px;
+	}
+	a.chzn-single{
+		height: 50px;
+		padding: 5px;
+	}
+	</style>
+	<title>ทะเบียนสมาชิก</title>
 </head>
 <body class="metro">
     	<?php $this->load->view('template/navigation');?>	
