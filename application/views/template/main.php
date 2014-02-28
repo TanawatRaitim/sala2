@@ -16,21 +16,14 @@
 			var element = document.getElementById('test');
 		}); 
 </script>
-	<style>
-		.test{
-			background-color: red;
-			
-			/*
-			 * 
-			 * css comment
-			 * 
-			 */
-		}
-	</style>
 </head>
 <body class="metro">
 	<?php $this->load->view('template/navigation');?>	
-	<div class="container" style="margin-top: 50px;"><!-- div.container -->	
+	<div class="container" style="margin-top: 50px;"><!-- div.container -->
+		
+		<!-- <pre><?php print_r($this->session->userdata['identity']);?></pre> -->
+		<pre><?php print_r($this->session->userdata);?></pre>
+		
 	</div> <!-- end div.container -->
 </body>
 </html>
