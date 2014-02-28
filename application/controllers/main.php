@@ -165,17 +165,34 @@ class Main extends CI_Controller {
 			$this->_data_output($output);
 	}
 		
-	public function question()
+	public function questions()
 	{
 			$crud = new grocery_CRUD();
-			$crud->set_table('question');
-			$crud->set_subject('Question');
+			$crud->set_table('questions');
+			$crud->set_subject('Questions');
 			$output = $crud->render();
 
 			$this->_data_output($output);
 	}
 		
-			
+	public function salary()
+	{
+			$crud = new grocery_CRUD();
+			$crud->set_table('salary');
+			$crud->set_subject('Salary');
+			$output = $crud->render();
+
+			$this->_data_output($output);
+	}
 		
+	public function sexual()
+	{
+			$crud = new grocery_CRUD();
+			$crud->set_table('sexual');
+			$crud->set_subject('Sexual');
+			$output = $crud->render();
+
+			$this->_data_output($output);
+	}
 
 }
