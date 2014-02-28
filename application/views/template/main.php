@@ -30,8 +30,7 @@
 </head>
 <body class="metro">
 	<?php $this->load->view('template/navigation');?>	
-	<div class="container" style="margin-top: 50px;"><!-- div.container -->
-	
+	<div class="container" style="margin-top: 50px;"><!-- div.container -->	
 	</div> <!-- end div.container -->
 </body>
 </html>

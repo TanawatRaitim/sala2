@@ -47,7 +47,7 @@ a.chzn-single{
 </style>
 </head>
 <body class="metro">
-	
+    	<?php $this->load->view('template/navigation');?>	
 	<!-- <div>
 		<a href='<?php echo site_url('examples/customers_management')?>'>Customers</a> |
 		<a href='<?php echo site_url('examples/orders_management')?>'>Orders</a> |
@@ -61,12 +61,7 @@ a.chzn-single{
 	</div> -->
 	<div style='height:20px;'></div>  
     <div class="container" style="margin-top: 50px;">
-    	<?php $this->load->view('template/navigation');?>
 		<?php echo $output; ?>
-		   <div class="input-control text" data-role="datepicker" data-format="dd/mm/yyyy">
-    <input type="text">
-    <button class="btn-date"></button>
-    </div>
     </div>
 </body>
 </html>
