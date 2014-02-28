@@ -6,22 +6,15 @@ class Main extends CI_Controller {
 	{
 		parent::__construct();
 		
-		
 		if (!$this->ion_auth->logged_in())	
 		{
 			redirect('auth/login', 'refresh');
 			exit();
 		}
 		
-
 		$this->load->database();
 		$this->load->helper('url');
-
 		$this->load->library('grocery_CRUD');
-		//$this->grocery_crud->set_js('assets/metro_ui/min/metro.min.js');
-		//$this->grocery_crud->set_css('assets/metro_ui/css/metro-bootstrap.css');
-		//$this->grocery_crud->set_css('assets/metro_ui/css/metro-bootstrap-responsive.css');
-		
 	}
 
 	public function _example_output($output = null)
@@ -31,23 +24,8 @@ class Main extends CI_Controller {
 
 	}
 
-	public function offices()
-	{
-			
-		//$this->grocery_crud->set_js('assets/js/big.js');
-		$output = $this->grocery_crud->render();
-		echo '<pre>';
-		print_r($output);
-		echo '</pre>';
-		
-		$this->_example_output($output);
-	}
-
 	public function index()
 	{
-		
-		//$this->_example_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
-		// $this->_example_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
 		$this->data['title'] = 'หน้าหลัก';
 		$this->load->view('template/main',$this->data);
 	}
@@ -57,28 +35,9 @@ class Main extends CI_Controller {
 	{
 			$crud = new grocery_CRUD();
 
-			// $crud->set_theme('datatables');
 			$crud->set_table('history');
-			// $crud->columns('issue');
-			//$crud->columns('mem_vchr_name', 'mem_int_issue');
-			
-			
-			
-			
-			// $crud->callback_column('mem_vchr_name',array($this,'callback_test_member'));
-			// $crud->set_relation('geo_id','sl_geography','geo_name');
-			//$crud->display_as('officeCode','Office City');
 			$crud->set_subject('History');
-
-
-			//$crud->required_fields('lastName');
-
-			//$crud->set_field_upload('file_url','assets/uploads/files');
-			
-			
 			$output = $crud->render();
-
-
 			$this->_example_output($output);
 		
 	}
@@ -86,68 +45,42 @@ class Main extends CI_Controller {
 	public function members()
 	{
 			$crud = new grocery_CRUD();
-
-			//$crud->set_theme('datatables');
 			$crud->set_table('tb_member');
 			$crud->columns('mem_vchr_name', 'mem_int_issue');
-			
-			
-			
-			
-			// $crud->callback_column('mem_vchr_name',array($this,'callback_test_member'));
-			// $crud->set_relation('geo_id','sl_geography','geo_name');
-			//$crud->display_as('officeCode','Office City');
 			$crud->set_subject('Member');
-
-
-			//$crud->required_fields('lastName');
-
-			//$crud->set_field_upload('file_url','assets/uploads/files');
-			
-			
 			$output = $crud->render();
-
-
 			$this->_example_output($output);
 		
 	}
 	
-	public function callback_test_member($value, $row)
-	{
-		print_r($value);
-		exit();
-	}
-
 	public function provinces()
 	{
 			$crud = new grocery_CRUD();
-
-			//$crud->set_theme('datatables');
-			$crud->set_table('sl_provinces');
-			$crud->set_relation('geo_id','sl_geography','geo_name');
-			//$crud->display_as('officeCode','Office City');
+			$crud->set_table('provinces');
+			$crud->set_relation('geo_id','geography','geo_name');
 			$crud->set_subject('รายชื่อจังหวัด');
-			
 			$extras = array();
-			$extras['big'] = 'tanawat';
-			$extras['por'] = 'rittigun';
-			$extras['jsfile'] = array();
-			$extras['jsfile'][] = 'file1';
-			$extras['jsfile'][] = 'file2';
-			$extras['jsfile'][] = 'file3';
-			$extras['jsfile'][] = 'file4';
+			
+/*
+ * 
+ * test new method set_extra_data()
+ * @param array
+ * @return array
+ * 
+ * 
+ */
+			
+			// $extras['big'] = 'tanawat';
+			// $extras['por'] = 'rittigun';
+			// $extras['jsfile'] = array();
+			// $extras['jsfile'][] = 'file1';
+			// $extras['jsfile'][] = 'file2';
+			// $extras['jsfile'][] = 'file3';
+			// $extras['jsfile'][] = 'file4';
+			
 			
 			$crud->set_extra_data($extras);
-			
-			//$crud->set_extras($extras);
-
-			//$crud->required_fields('lastName');
-
-			//$crud->set_field_upload('file_url','assets/uploads/files');
-			
-			
 			$output = $crud->render();
-
 			$this->_example_output($output);
 	}	
 	
