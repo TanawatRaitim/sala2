@@ -20,6 +20,7 @@ $config['base_url']	= 'http://172.168.0.184/sala2/';
  * Base assets URL
  */ 
 $config['base_assets'] = 'http://172.168.0.184/sala2/assets/';
+$config['base_assets_images'] = 'http://172.168.0.184/sala2/assets/images/';
  
 /*
  * config script files

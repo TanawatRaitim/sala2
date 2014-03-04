@@ -1,7 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Main extends CI_Controller {
-
+	
+	private $data;
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -26,7 +28,43 @@ class Main extends CI_Controller {
 
 	public function index()
 	{
+		$this->load->model('history_model');
+		
+		/********************************        config pagination     **********************/		
+		$config['base_url'] = base_url()."/main/index/";
+		$config['per_page'] = 25;																//how many record per page
+		$config['num_links'] = 3;																//how many link to show
+		$config['full_tag_open'] = '<div class="pagination pagination-centered pagination-small"><ul>';										//bootstrap use <div class="pagination"></div>
+		$config['full_tag_close'] = '</ul></div>';
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="active"><a href="#"><b>';
+		$config['cur_tag_close'] = '</b></a></li>';
+		$config['first_tag_open'] = "<li>";
+		$config['first_tag_close'] = "</li>";
+		$config['last_tag_open'] = "<li>";
+		$config['last_tag_close'] = "</li>";
+		$config['next_tag_open'] = "<li>";
+		$config['next_tag_close'] = "</li>";
+		$config['prev_tag_open'] = "<li>";
+		$config['prev_tag_close'] = "</li>";
+		//$this->data['query_product'] = $this->product_model->getall($config['per_page'],$this->uri->segment(3));
+		$this->data['histories'] = $this->history_model->getall($config['per_page'],$this->uri->segment(3));
+		/*$this->data['last_query'] = $this->db->last_query();*/
+		$config['total_rows'] = $this->db->count_all('history');							//แถวทั้งหมด
+		$this->pagination->initialize($config);												//create
+		$this->data['pagination'] = $this->pagination->create_links();
+/**********************************end config pagination*******************************************************************/	
+		
+		
+		
+		
 		$this->data['title'] = 'หน้าหลัก';
+		
+		
+		
+		
+		
 		$this->load->view('template/main',$this->data);
 	}
 	
@@ -45,7 +83,7 @@ class Main extends CI_Controller {
 	{
 			$crud = new grocery_CRUD();
 			$crud->set_table('members');
-			$crud->columns('idcard', 'fname','lname','dob','address','sub_district','district','province','postcode');
+			$crud->columns('idcard', 'fname','lname','dob','address','sub_district','district','province_id','postcode');
 			$crud->set_subject('Member');
 			$output = $crud->render();
 			$this->_data_output($output);
@@ -56,7 +94,7 @@ class Main extends CI_Controller {
 	{
 			$crud = new grocery_CRUD();
 			$crud->set_table('provinces');
-			$crud->set_relation('geo_id','geography','geo_name');
+			$crud->set_relation('geo_id','geography','name');
 			$crud->set_subject('รายชื่อจังหวัด');
 			$extras = array();
 			
@@ -87,7 +125,7 @@ class Main extends CI_Controller {
 	{
 			$crud = new grocery_CRUD();
 			$crud->set_table('issues');
-			$crud->set_relation('pocketbook_id','pocketbook','name');
+			$crud->set_relation('book_id','books','name');
 			$crud->display_as('pocketbook_id','Pocket Book');
 			$crud->set_subject('Issue');
 			$output = $crud->render();
@@ -95,11 +133,11 @@ class Main extends CI_Controller {
 			$this->_data_output($output);
 	}
 		
-	public function pocketbook()
+	public function books()
 	{
 			$crud = new grocery_CRUD();
-			$crud->set_table('pocketbook');
-			$crud->set_subject('Pocket Books');
+			$crud->set_table('books');
+			$crud->set_subject('Books');
 			$output = $crud->render();
 
 			$this->_data_output($output);
