@@ -18,7 +18,8 @@
 					
 			$sql = "SELECT members.member_code, CONCAT(members.title,' ',members.fname,' ',members.lname) as member_name,
 					(YEAR(CURDATE())-YEAR(members.dob)) as age, provinces.name as province, 
-					books.name as book, issues.name as issue, history.volume, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img   
+					books.name as book, issues.name as issue, history.volume, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
+					DATE_FORMAT(history.create_date,'%d-%m-%Y') as history_date   
 					FROM history 
 					LEFT JOIN members ON(members.id = history.member_id)
 					LEFT JOIN sexual ON(sexual.id = history.sexual_id)

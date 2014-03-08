@@ -1,3 +1,20 @@
-div.container{
-	padding-top: 50px;
+.text-underline{
+	text-decoration: underline;
 }
+input.error{
+
+	outline: 1px red solid;
+}
+
+span#idcard_error{
+	color: red;
+}
+
+td.table-label{
+	text-align: right;
+	/*color: red;*/
+	/*background-color: yellow;*/
+	/*font-weight: bolder;*/
+}
+
+

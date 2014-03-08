@@ -26,7 +26,7 @@
 		<div class="grid">	
 			<div class="row">
 				<div class="span12">
-					<a href="#" class="button bg-cobalt fg-white large">Add new</a> &nbsp;//add new
+					<a href="<?php echo site_url('history/check_idcard')?>" class="button bg-cobalt fg-white large">Add new</a> &nbsp;//add new
 				</div>
 			</div>	
 		</div>
@@ -57,7 +57,6 @@
 							</div>
 							<div class="input-control text size1">
 								<input type="text" placeholder="เล่มที่" />
-								
 							</div>
 							<input type="button" class="button bg-darkGreen fg-white" value="Export" />
 						</td>
@@ -72,8 +71,8 @@
 						<th>หนังสือ</th>
 						<th>คอลัมน์</th>
 						<th>เล่มที่</th>
+						<th>วันที่บันทึก</th>
 						<th>Actions</th>
-						<th></th>
 						<th></th>
 					</tr>
 					
@@ -90,8 +89,8 @@
 						<td class="text-center"><?php echo $history['book'];?></td>
 						<td class="text-center"><?php echo $history['issue'];?></td>
 						<td class="text-center"><?php echo $history['volume'];?></td>
+						<td class="text-center"><?php echo $history['history_date'];?></td>
 						<td class="text-center"><a href="#" class="text-underline">ดู</a> &nbsp;&nbsp;<a href="#" class="text-underline">แก้ไข</a> &nbsp;&nbsp;<a href="#" class="text-underline">เพิ่ม</a></td>
-						<td></td>
 						<td></td>
 					</tr>
 					

@@ -28,7 +28,7 @@ class Main extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->model('history_model');
+		$this->load->model('member_model');
 		
 		/********************************        config pagination     **********************/		
 		$config['base_url'] = base_url()."/main/index/";
@@ -49,21 +49,14 @@ class Main extends CI_Controller {
 		$config['prev_tag_open'] = "<li>";
 		$config['prev_tag_close'] = "</li>";
 		//$this->data['query_product'] = $this->product_model->getall($config['per_page'],$this->uri->segment(3));
-		$this->data['histories'] = $this->history_model->getall($config['per_page'],$this->uri->segment(3));
+		$this->data['histories'] = $this->member_model->get_all_history($config['per_page'],$this->uri->segment(3));
 		/*$this->data['last_query'] = $this->db->last_query();*/
 		$config['total_rows'] = $this->db->count_all('history');							//แถวทั้งหมด
 		$this->pagination->initialize($config);												//create
 		$this->data['pagination'] = $this->pagination->create_links();
 /**********************************end config pagination*******************************************************************/	
 		
-		
-		
-		
 		$this->data['title'] = 'หน้าหลัก';
-		
-		
-		
-		
 		
 		$this->load->view('template/main',$this->data);
 	}
