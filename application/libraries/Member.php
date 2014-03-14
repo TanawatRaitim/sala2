@@ -123,6 +123,8 @@ class Member {
 			$this->ci->member_model->add_new_member();
 		}
 		
+		//redirect update with id
+		
 		
 	}
 	

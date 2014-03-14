@@ -64,7 +64,7 @@ $autoload['libraries'] = array('database','pagination','session','input','ion_au
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url', 'string','html','dropdown_helper');
+$autoload['helper'] = array('url', 'string','html','dropdown_helper','date_helper');
 
 
 /*

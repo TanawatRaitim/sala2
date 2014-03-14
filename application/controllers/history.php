@@ -46,10 +46,14 @@ class History extends CI_Controller {
 		$this->member->set_idcard($this->input->post('idcard'));
 		$is_member = $this->member->is_member();
 		$this->data['is_member'] = $is_member;
-		$this->data['member_info'] = $this->member->get_member_info();
-		$this->data['history_info'] = $this->member->get_last_history_info();
-		$this->data['personalize_info'] = $this->member->get_last_personalize_info();
-		$this->data['contact_info'] = $this->member->get_last_contact_info();
+		
+		if($is_member)
+		{
+			$this->data['member_info'] = $this->member->get_member_info();
+			$this->data['history_info'] = $this->member->get_last_history_info();
+			$this->data['personalize_info'] = $this->member->get_last_personalize_info();
+			$this->data['contact_info'] = $this->member->get_last_contact_info();
+		}
 		
 		$this->load->view('template/history/add',$this->data);	
 	}
@@ -58,6 +62,15 @@ class History extends CI_Controller {
 	{
 		$this->load->library('member');
 		$this->member->add();
+		
+		
+	}
+
+	public function test()
+	{
+		echo mysql2thaidate('1981-08-03');
+		echo '<br />';
+		echo thaidate2mysql('03-08-2524');
 	}
 	
 }

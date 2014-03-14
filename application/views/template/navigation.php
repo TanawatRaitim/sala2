@@ -1,5 +1,5 @@
 	<!-- <nav class="navigation-bar fixed-top shadow bg-cobalt"> -->
-	<nav class="navigation-bar fixed-top shadow bg-darkIndigo">
+	<nav class="navigation-bar fixed-top shadow bg-darkTeal">
 		<div class="navigation-bar-content">
 			<a href="<?php echo base_url();?>" class="element"><span class="icon-heart"></span> ทะเบียนสมาชืกศาลาบริการ <sup>2.0</sup></a>
 			<span class="element-divider"></span>
@@ -62,6 +62,7 @@
 				</li>
 				<!-- end admin menu -->
 				<?php endif;?>
+				<li><a href="<?php echo base_url().'history/check_idcard';?>">เพิ่มข้อมูล</a></li>
 			</ul>
 
 			<div class="no-tablet-portrait">

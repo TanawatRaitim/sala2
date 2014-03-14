@@ -1,3 +1,4 @@
+
 .text-underline{
 	text-decoration: underline;
 }
@@ -15,6 +16,15 @@ td.table-label{
 	/*color: red;*/
 	/*background-color: yellow;*/
 	/*font-weight: bolder;*/
+}
+
+input[type='text']{
+	/*color: red;*/
+	padding: 5px;
+}
+
+select{
+	padding: 5px;
 }
 
 
