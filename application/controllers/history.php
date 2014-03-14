@@ -62,8 +62,16 @@ class History extends CI_Controller {
 	{
 		$this->load->library('member');
 		$this->member->add();
+	}
+
+	public function update()
+	{
 		
 		
+		echo $this->session->flashdata('insert_message');
+			
+				
+		echo 'we are in update function';
 	}
 
 	public function test()

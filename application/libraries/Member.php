@@ -118,9 +118,21 @@ class Member {
 		
 		if($this->ci->input->post('ismember')=="yes")
 		{
-			$this->ci->member_model->add_old_member();	
+			$history_id = $this->ci->member_model->add_old_member();	
 		}else{
-			$this->ci->member_model->add_new_member();
+			$history_id = $this->ci->member_model->add_new_member();
+		}
+		
+		if($history_id)
+		{
+			//set flash data
+			$this->ci->session->set_flashdata('insert_message','Insert successful');
+			
+			//redirect to edit
+			redirect('history/update', 'refresh');
+			
+		}else{
+			echo 'ไม่สามารถบันทึกข้อมูลได้โปรดติดต่อ Admin';
 		}
 		
 		//redirect update with id

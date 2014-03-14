@@ -29,6 +29,7 @@
 					errorPlacement: function(error, element){
 					error.appendTo($("span#idcard_error"));
 				},
+				//errorClass: "error-state",
 				rules: {
 					idcard:{
 						required: true,
@@ -37,7 +38,7 @@
 				},messages:{
 					idcard:{
 						required: 'กรุณากรอกข้อมูลให้ครบถ้วน',
-						pid13: 'รหัสไม่ถูกต้อง     <br />ถ้ายืนยันจะใช้รหัสนี้ <button class="button" id="valid_pass">กด</button>'
+						pid13: 'รหัสไม่ถูกต้อง     <br />ถ้ายืนยันจะใช้รหัสนี้ <button class="button bg-lightBlue fg-white" id="valid_pass">กด</button>'
 					}
 				}
 			});

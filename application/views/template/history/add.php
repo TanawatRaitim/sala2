@@ -14,16 +14,6 @@
     <script src="<?php echo $this->config->item('base_assets'); ?><?php echo $this->config->item('jquery_validation_additional'); ?>"></script>
     <title><?php echo $title; ?></title>
     <script>
-			$.validator.addMethod(
-			  "pid13",
-			  function(value, element) {
-			    if(value.length != 13) return false;
-				for(i=0, sum=0; i < 12; i++)
-				sum += parseFloat(value.charAt(i))*(13-i); if((11-sum%11)%10!=parseFloat(value.charAt(12)))
-				return false; return true;
-				},
-			  "Please enter a valid personal ID."
-			);
     		
 		$(function(){
 			
@@ -44,7 +34,6 @@
 			
 			//var jqueryNC = jQuery.noConflict();
 			
-			
 			$.datepicker.regional['th'] ={
 		        changeMonth: true,
 		        changeYear: true,
@@ -64,49 +53,68 @@
 			$( "#dob" ).datepicker( $.datepicker.regional["th"] );   // บอกให้ใช้ Propertie ภาษาที่เรานิยามไว้
     		$( "#dob" ).datepicker();                                 //Innit DatePicker ไปที่ Control ที่มี ID = datepicker
 			
+
 			
 			
 			
-			 //$("#dob").datepicker({
-				//changeMonth: true,
-				//changeYear: true,
-				// yearRange: "-100:+0",
-				//dayNamesMin: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],   
-        		//monthNamesShort: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
-        		// dateFormat: 'yy-mm-dd'
-        		// dateFormat: 'dd-mm-yy',
-        		// yearOffSet:0
-        		//find date format
-        
-				//});
-			
-			
-			
-			$("#form_idcard").validate({
-					errorPlacement: function(error, element){
-					error.appendTo($("span#idcard_error"));
+			jQuery.validator.messages.required = "";
+			$("#form_new_member").validate({
+				invalidHandler: function(e, validator) {
+					var errors = validator.numberOfInvalids();
+					if (errors) {
+						var message = errors == 1
+							? 'You missed 1 field. It has been highlighted below'
+							: 'You missed ' + errors + ' fields.  They have been highlighted below';
+						$("div.error span").html(message);
+						$("div.error").show();
+					} else {
+						$("div.error").hide();
+					}
 				},
-				rules: {
-					idcard:{
-						required: true,
-						pid13: true
+				//errorClass: "error-state",
+				//validClass: "",
+				//focusInvalid: false,
+				onkeyup: false,
+				submitHandler: function() {
+					$("div.error").hide();
+					alert("submit! use link below to go to the other step");
+				},
+				rules:{
+					
+				},
+				messages: {
+					member_fname: {
+						required: " "
+						//equalTo: "Please enter the same password as above"
+					},
+					member_lname: {
+						required: " "
+						//email: "Please enter a valid email address, example: you@yourdomain.com",
+						//remote: jQuery.validator.format("{0} is already taken, please enter a different address.")
 					}
-				},messages:{
-					idcard:{
-						required: 'กรุณากรอกข้อมูลให้ครบถ้วน',
-						pid13: 'รหัสไม่ถูกต้อง     <br />ถ้ายืนยันจะใช้รหัสนี้ <button class="button" id="valid_pass">กด</button>'
-					}
-				}
+				},
+				debug:true
 			});
 			
 
-			$("body").on('click','#valid_pass',function(e){
-				$("#idcard").rules('remove', 'pid13');
-				// $("#form_idcard").submit();
-			});
+			
 		});
 		
 	</script>
+	<style>
+		.text-underline{
+			text-decoration: underline;
+		}
+		input.error{
+
+			/*outline: 2px red solid;*/
+			border: 2px red solid;
+		}
+		
+		span#idcard_error{
+			color: red;
+		}
+	</style>
 </head>
 <body class="metro">
 	<?php $this->load->view('template/navigation');?>
@@ -115,6 +123,10 @@
 		<h2><i class="icon-user fg-magenta"></i> เพิ่มข้อมูลใหม่ </h2>
 		
 		<?php echo print_r($_POST);?>
+		
+		<div class="error">
+			<span></span>
+		</div>
 		
 		<?php if($is_member):?>
 			
@@ -280,7 +292,7 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th colspan="8">ที่อยู่ปัจจุบันที่ใช้ติดต่อได้จริง <input type="button" value="ใช้ช้อมูลตามบัตรประชาชน" class="mini bg-lightPink bd-black" name="dup_data" id="dup_data" /></th>
+									<th colspan="8">ที่อยู่ปัจจุบันที่ใช้ติดต่อได้จริง <input type="button" value="ใช้ข้อมูลตามบัตรประชาชน" class="mini bg-lightPink bd-black" name="dup_data" id="dup_data" /></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -565,7 +577,7 @@
 							<tr class="selected">
 								<td class="text-right">หนังสือ</td>
 								<td>
-									<select name="history_book" id="history_book" style="width: 150px;" autofocus>
+									<select name="history_book" id="history_book" style="width: 150px;" autofocus required>
 										<?php echo books_dropdown();?>
 									</select>
 								</td>
@@ -573,14 +585,14 @@
 							<tr class="selected">
 								<td class="text-right">คอลัมน์</td>
 								<td>
-									<select name="history_issue" id="history_issue" style="width: 150px;">
+									<select name="history_issue" id="history_issue" style="width: 150px;" required>
 										<?php echo issues_dropdown();?>
 									</select>
 								</td>
 							</tr>
 							<tr class="selected">
 								<td class="text-right">เล่มที่</td>
-								<td><input type="text" name="history_volume" id="history_volume" /></td>
+								<td><input type="text" name="history_volume" id="history_volume"  required /></td>
 							</tr>
 						</table>
 					</div>
@@ -600,25 +612,25 @@
 							<tbody>
 								<tr class="selected">
 									<td class="text-right">
-										<select name="member_title" id="member_title">
+										<select name="member_title" id="member_title"  required>
 											<?php echo title_dropdown();?>
 										</select>
 									</td>
 									<td class="text-right text-bold">ชื่อ</td>
-									<td><input type='text' name="member_fname" id="fname" /></td>
+									<td><input type='text' name="member_fname" id="fname" required /></td>
 									<td class="text-right">นามสกุล</td>
-									<td><input type='text' name="member_lname" id="lname" /></td>
+									<td><input type='text' name="member_lname" id="lname" required /></td>
 									<td class="text-right">ชื่อเล่น</td>
-									<td><input type='text' size="12" name="member_nickname" id="nickname"  /></td>
+									<td><input type='text' size="12" name="member_nickname" id="nickname" /></td>
 								</tr>
 								<tr class="selected">
 									<td class="table-label" colspan="2">วันเกิด</td>
-									<td class="table-input"><input type='text' name="member_dob" id="dob" readonly="readonly" /></td>
+									<td class="table-input"><input type='text' name="member_dob" id="dob" readonly="readonly" required /></td>
 									<td class="text-right">นามแฝง</td>
 									<td><input type='text' name="history_alias" id="history_alias"  /></td>
 									<td class="text-right">รสนิยม</td>
 									<td>
-										<select name="history_sexual" id="history_sexual">
+										<select name="history_sexual" id="history_sexual" required>
 											<?php echo sexual_dropdown();?>
 										</select>
 									</td>
@@ -629,7 +641,7 @@
 								</tr>
 								<tr class="selected">
 									<td colspan="2" class="text-right">ข้อความที่ต้องการลง</td>
-									<td colspan="5"><input type='text' name="history_info" id="history_info" size="100" /></td>
+									<td colspan="5"><input type='text' name="history_info" id="history_info" size="100" required /></td>
 								</tr>
 							</tbody>
 						</table>
@@ -650,25 +662,25 @@
 							<tbody>
 								<tr class="selected">
 									<td class="table-label">ที่อยู่</td>
-									<td class="table-input" colspan="3"><input type='text' size="60" name="member_address" id="member_address" /></td>
+									<td class="table-input" colspan="3"><input type='text' size="60" name="member_address" id="member_address" required /></td>
 									<td class="text-right">แขวง/ตำบล</td>
-									<td><input type='text' size="15" name="member_sub_district" id="member_sub_district" /></td>
+									<td><input type='text' size="15" name="member_sub_district" id="member_sub_district" required /></td>
 									<td class="text-right">เขต/อำเภอ</td>
-									<td><input type='text' size="15" name="member_district" id="member_district" /></td>
+									<td><input type='text' size="15" name="member_district" id="member_district" required /></td>
 								</tr>
 								<tr class="selected">
 									
 									<td class="table-label">จังหวัด</td>
 									<td class="table-input">
-										<select name="member_province" id="member_province">
+										<select name="member_province" id="member_province" required>
 											<?php echo province_dropdown();?>
 										</select>
 									</td>
 									<td class="table-label">รหัสไปรษณีย์</td>
-									<td class="table-input"><input type="text" size="10" name="member_postcode" id="member_postcode" /></td>
+									<td class="table-input"><input type="text" size="10" name="member_postcode" id="member_postcode" required /></td>
 									<td class="text-right">ประเทศ</td>
 									<td>
-										<select name="member_country" id="member_country">
+										<select name="member_country" id="member_country" required>
 											<?php echo countries_dropdown();?>
 										</select>
 									</td>
@@ -687,30 +699,30 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th colspan="8">ที่อยู่ปัจจุบันที่ใช้ติดต่อได้จริง<input type="button" value="ใช้ช้อมูลตามบัตรประชาชน" class="mini bg-lightPink bd-black" name="dup_data" id="dup_data" /></th>
+									<th colspan="8">ที่อยู่ปัจจุบันที่ใช้ติดต่อได้จริง<input type="button" value="ใช้ข้อมูลตามบัตรประชาชน" class="mini bg-lightPink bd-black" name="dup_data" id="dup_data" /></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr class="selected">
 									<td class="table-label">ที่อยู่</td>
-									<td class="table-input" colspan="3"><input size="55" type="text" name="contact_address" id="contact_address" /></td>
+									<td class="table-input" colspan="3"><input size="55" type="text" name="contact_address" id="contact_address" required /></td>
 									<td class="text-left">แขวง/ตำบล</td>
-									<td><input type="text" size="15" name="contact_sub_district" id="contact_sub_district" /></td>
+									<td><input type="text" size="15" name="contact_sub_district" id="contact_sub_district" required /></td>
 									<td class="text-left">เขต/อำเภอ</td>
-									<td><input type="text" size="15" name="contact_district" id="contact_district" /></td>
+									<td><input type="text" size="15" name="contact_district" id="contact_district" required /></td>
 								</tr>
 								<tr class="selected">
 									<td class="table-label">จังหวัด</td>
 									<td class="table-input">
-										<select name="contact_province" id="contact_province">
+										<select name="contact_province" id="contact_province" required>
 											<?php echo province_dropdown();?>
 										</select>
 									</td>
 									<td class="table-label">รหัสไปรษณีย์</td>
-									<td class="table-input"><input type="text" size="10" name="contact_postcode" id="contact_postcode" /></td>
+									<td class="table-input"><input type="text" size="10" name="contact_postcode" id="contact_postcode" required /></td>
 									<td class="text-right">ประเทศ</td>
 									<td>
-										<select name="contact_country" id="contact_country">
+										<select name="contact_country" id="contact_country" required>
 											<?php echo countries_dropdown();?>
 										</select>
 									</td>
@@ -932,7 +944,7 @@
 				<div class="row">
 					<div class="span12 text-center">
 						<input type="submit" value="บันทึกข้อมูล" class="button bg-cobalt fg-white large shadow" />
-						<input type="button" value="ยกเลิก" class="button bg-red fg-white large shadow" />
+						<input type="button" value="ยกเลิก" class="button bg-red fg-white large shadow" name="cancel" id="cancel" />
 					</div>
 				</div>
 			</div>

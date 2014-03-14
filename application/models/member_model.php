@@ -93,6 +93,13 @@
 			return $this->db->get($table);
 		}
 		
+		
+		/**
+		 * 
+		 * @return history id
+		 * 
+		 */
+		 
 		public function add_old_member()
 		{
 			
@@ -235,10 +242,14 @@
 				
 			}
 			
+			return $history_id;
 			
-			//redirect to edit
 						
 		}
+		
+		/**
+		 * @return history id
+		 */
 		
 		public function add_new_member()
 		{
@@ -383,7 +394,9 @@
 				$this->db->where('id',$history_id);
 				$this->db->update('history',$image_data);
 				
-			}		
+			}
+			
+			return $history_id;		
 			
 			
 		}
