@@ -26,14 +26,14 @@
 		<div class="grid">	
 			<div class="row">
 				<div class="span12">
-					<a href="<?php echo site_url('history/check_idcard')?>" class="button bg-cobalt fg-white large">Add new</a> &nbsp;//add new
+					<a href="<?php echo site_url('history/check_idcard')?>" class="button bg-cobalt fg-white large shadow">เพิ่มข้อมูล</a>
 				</div>
 			</div>	
 		</div>
 		
 		<?php if($histories->num_rows()>0):?>
 			
-			<table class="table bordered hovered">
+			<table class="table bordered hovered striped">
 				<thead>
 					<tr>
 						<!-- <td colspan="12"><?php echo $pagination;?></td> -->
@@ -44,7 +44,7 @@
 							</div>
 					<!-- <input type="text" /><button class="button">big</button> -->
 						</td>
-						<td colspan="10" class="bg-mauve">
+						<td colspan="11" class="bg-mauve">
 							<div class="input-control select size2">
 								<select>
 									<option>หนังสือ</option>
@@ -63,6 +63,7 @@
 					</tr>
 					<tr>
 						<th>ID</th>
+						<th>ID Card</th>
 						<th>ชื่อ-นามสกุล</th>
 						<th>เพศ</th>
 						<th>รสนิยม</th>
@@ -81,6 +82,7 @@
 		<?php foreach ($histories->result_array() as $history): ?>
 					<tr>
 						<td><?php echo $history['member_code'];?></td>
+						<td><?php echo $history['idcard'];?></td>
 						<td><?php echo $history['member_name'];?></td>
 						<td class="text-center"><?php echo $history['sexual_descr'];?></td>
 						<td class="text-center"><img class="rounded" src="<?php echo $this->config->item('base_assets_images');?><?php echo $history['sexual_img'];?>" alt="<?php echo $history['sexual'];?>" /></td>						
@@ -90,7 +92,17 @@
 						<td class="text-center"><?php echo $history['issue'];?></td>
 						<td class="text-center"><?php echo $history['volume'];?></td>
 						<td class="text-center"><?php echo $history['history_date'];?></td>
-						<td class="text-center"><a href="#" class="text-underline">ดู</a> &nbsp;&nbsp;<a href="#" class="text-underline">แก้ไข</a> &nbsp;&nbsp;<a href="#" class="text-underline">เพิ่ม</a></td>
+						<!-- <td class="text-center"><a href="#" class="text-underline">ดู</a> &nbsp;&nbsp;<a href="#" class="text-underline">แก้ไข</a> &nbsp;&nbsp;<a href="#" class="text-underline">เพิ่ม</a></td> -->
+						<td>
+							<div class="button-dropdown">
+								<button class="dropdown-toggle bg-darkCobalt fg-white">Actions</button>
+								<ul class="dropdown-menu" data-role="dropdown">
+									<li><a href="#">ดู</a></li>
+									<li><a href="#">แก้ไข</a></li>
+									<li><a href="#">เพิ่ม</a></li>
+								</ul>
+							</div>
+						</td>
 						<td></td>
 					</tr>
 					

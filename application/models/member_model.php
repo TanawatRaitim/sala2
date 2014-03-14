@@ -57,14 +57,7 @@
 		public function get_all_history($perpage, $offset)
 		{
 			
-			$sql = "SELECT ap_product.product_id, ap_product.product_name, ap_product.product_description, ap_frequency.frequency_name, ap_department.department_name  
-					FROM ap_product 
-					LEFT JOIN ap_frequency ON(ap_product.frequency_id = ap_frequency.frequency_id)
-					LEFT JOIN ap_department ON(ap_product.department_id = ap_department.department_id)
-					ORDER BY ap_product.product_name
-					";
-					
-			$sql = "SELECT members.member_code, CONCAT(members.title,' ',members.fname,' ',members.lname) as member_name,
+			$sql = "SELECT members.idcard, members.member_code, CONCAT(members.title,' ',members.fname,' ',members.lname) as member_name,
 					(YEAR(CURDATE())-YEAR(members.dob)) as age, provinces.name as province, 
 					books.name as book, issues.name as issue, history.volume, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
 					DATE_FORMAT(history.create_date,'%d-%m-%Y') as history_date   

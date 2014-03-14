@@ -127,7 +127,11 @@
 			<div class="grid">
 				<div class="row">
 					<div class="span2">
-						<img class="cycle shadow" src="<?php echo $this->config->item('base_history_thumbs').$history_info[0]['image'];?>">
+						<?php if ($history_info[0]['image']): ?>
+							<img class="cycle shadow" src="<?php echo $this->config->item('base_history_thumbs').$history_info[0]['image'];?>">
+						<?php else: ?>
+							<img class="cycle shadow" src="<?php echo $this->config->item('base_assets_images');?>no_img.png">
+						<?php endif ?>
 					</div>
 					<div class="span6">
 						
