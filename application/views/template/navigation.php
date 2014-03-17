@@ -1,7 +1,7 @@
 	<!-- <nav class="navigation-bar fixed-top shadow bg-cobalt"> -->
 	<nav class="navigation-bar fixed-top shadow bg-darkTeal">
 		<div class="navigation-bar-content">
-			<a href="<?php echo base_url();?>" class="element"><span class="icon-heart"></span> ทะเบียนสมาชืกศาลาบริการ <sup>2.0</sup></a>
+			<a href="<?php echo base_url();?>" class="element"><span class="icon-heart"></span> ทะเบียนสมาชิกศาลาบริการ <sup>2.0</sup></a>
 			<span class="element-divider"></span>
 			<a class="pull-menu" href="#"></a>
 			<ul class="element-menu">
