@@ -98,8 +98,8 @@
 								<button class="dropdown-toggle bg-darkCobalt fg-white">Actions</button>
 								<ul class="dropdown-menu" data-role="dropdown">
 									<li><a href="#">ดู</a></li>
-									<li><a href="#">แก้ไข</a></li>
-									<li><a href="#">เพิ่ม</a></li>
+									<li><a href="<?php echo base_url();?>history/edit/<?php echo $history['history_id'];?>">แก้ไข</a></li>
+									<li><a href="<?php echo base_url();?>history/addtemp/<?php echo $history['history_id'];?>">เพิ่ม</a></li>
 								</ul>
 							</div>
 						</td>

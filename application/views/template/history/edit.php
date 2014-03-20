@@ -39,11 +39,7 @@
 				$("#contact_province").val($("#member_province").val()).effect("highlight","slow");
 				$("#contact_postcode").val($("#member_postcode").val()).effect("highlight","slow");
 				$("#contact_country").val($("#member_country").val()).effect("highlight","slow");
-				// $("#").val($("#").val());
-				
-				
-				//alert('function is in progress');
-				//return false;
+
 			});
 			
 			//var jqueryNC = jQuery.noConflict();
@@ -85,10 +81,9 @@
 			jQuery.validator.messages.min = "";
 			
 			
-			$("#form_new_member, #form_old_member").validate({
+			$("#form_edit_member").validate({
 				invalidHandler: function(e, validator) {
-					
-					
+
 					 $.Dialog({
 						shadow: true,
 						overlay: true,
@@ -102,21 +97,6 @@
 					
 					//alert('กรุณาตรวจสอบข้อมูล');
 					$("html, body").animate({ scrollTop: 100 }, "fast");//new
-					
-					/*
-					
-					var errors = validator.numberOfInvalids();
-					if (errors) {
-						var message = errors == 1
-							? 'You missed 1 field.  They have been highlighted below'
-							//: 'คุณยังกรอกข้อมูลไม่ครบถ้วน กรุณาตรวจสอบก่อนบันทึก';
-							: 'You missed ' + errors + ' fields.  They have been highlighted below';
-						$("div.error span").html(message);
-						$("div.error").show();
-					} else {
-						$("div.error").hide();
-					}
-					*/
 					
 				},
 				//errorClass: "error-state",
@@ -133,7 +113,7 @@
 					    ok     : "ตกลง",
 					    cancel : "ยกเลิก"
 					} });
-					alertify.confirm("ยืนยันการบันทึกข้อมูล", function (e) {
+					alertify.confirm("ยืนยันการแก้ไขข้อมูล", function (e) {
 					    if (e) {
 					    	form.submit();
 					        // user clicked "ok"
@@ -143,9 +123,6 @@
 					        // user clicked "cancel"
 					        return false;
 					    }
-					    
-					    
-					    
 					});
 					
 				},
@@ -196,6 +173,8 @@
 								},
 								ismember: function(){
 									return $("#ismember").val();
+								},history_id: function(){
+									return $("#history_id").val();
 								}
 							}
 						}
@@ -238,16 +217,16 @@
 	<?php $this->load->view('template/navigation');?>
 	
 	<div class="container" style="margin-top: 70px;"><!-- div.container -->
-		<h2><i class="icon-user fg-magenta"></i> เพิ่มข้อมูลใหม่ </h2>
-		
-		<?php if($is_member):?>
+		<h2><i class="icon-user fg-magenta"></i> แก้ไขข้อมูล </h2>
 			
-		<form action="<?php echo site_url('history/add');?>" method="post" enctype="multipart/form-data" name="form_old_member" id="form_old_member">
+		<form action="<?php echo site_url('history/update');?>" method="post" enctype="multipart/form-data" name="form_edit_member" id="form_edit_member">
 			<input type="hidden" name="member_idcard" id="member_idcard" value="<?php echo $member_info[0]['idcard'];?>" />
 			<input type="hidden" name="member_code" id="member_code" value="<?php echo $member_info[0]['member_code'];?>" />
 			<input type="hidden" name="member_id" id="member_id" value="<?php echo $member_info[0]['id'];?>" />
 			<input type="hidden" name="ismember" id="ismember" value="yes" />
-				
+			<input type="hidden" name="history_id" id="history_id" value="<?php echo $history_info[0]['id'];?>" />
+			<input type="hidden" name="contact_id" id="contact_id" value="<?php echo $history_info[0]['contact_id'];?>" />
+			<input type="hidden" name="personalize_id" id="personalize_id" value="<?php echo $history_info[0]['personalize_id'];?>" />
 			<div class="grid">
 				<div class="row">
 					<div class="span2">
@@ -652,423 +631,12 @@
 						<div class="error">
 							<span></span>
 						</div>
-						<input type="submit" value="บันทึกข้อมูล" class="button bg-cobalt fg-white large shadow" />
+						<input type="submit" value="แก้ไขข้อมูล" class="button bg-cobalt fg-white large shadow" />
 						<input type="button" id="cancel" name="cancel" value="ยกเลิก" class="button bg-red fg-white large shadow" />
 					</div>
 				</div>
 			</div>
 		</form>
-		
-		<?php else:?>
-
-			<form action="<?php echo site_url('history/add');?>" method="post" enctype="multipart/form-data" id="form_new_member" name="form_new_member">
-			<input type="hidden" name="member_idcard" id="member_idcard" value="<?php echo $_POST['idcard'];?>" />
-			<input type="hidden" name="member_code" id="member_code" value="" />
-			<input type="hidden" name="member_id" id="member_id" value="" />
-			<input type="hidden" name="ismember" id="ismember" value="no" />
-				
-			<div class="grid">
-				<div class="row">
-					<div class="span8">
-						<table class="table">
-							<tr>
-								<th colspan="2">รายละเอียด</th>
-							</tr>
-							<tr>
-								<td>รหัสบัตรประชาชน : </td>
-								<td><?php echo $_POST['idcard'];?></td>
-							</tr>
-							<tr>
-								<td>รหัสสมาชิก : </td>
-								<td></td>
-							</tr>
-						</table>	
-					</div>
-					<div class="span4 shadow">
-						<table class="table">
-							<tr>
-								<th colspan="2">ข้อมูลหนังสือ</th>
-							</tr>
-							<tr class="selected">
-								<td class="text-right">หนังสือ</td>
-								<td>
-									<select name="history_book" id="history_book" style="width: 150px;" autofocus required>
-										<?php echo books_dropdown();?>
-									</select>
-								</td>
-							</tr>
-							<tr class="selected">
-								<td class="text-right">คอลัมน์</td>
-								<td>
-									<select name="history_issue" id="history_issue" style="width: 150px;" required>
-										<?php echo issues_dropdown();?>
-									</select>
-								</td>
-							</tr>
-							<tr class="selected">
-								<td class="text-right">เล่มที่</td>
-								<td><input type="text" name="history_volume" id="history_volume" required /></td>
-							</tr>
-						</table>
-					</div>
-				</div>
-			</div><!-- div.grid -->
-			
-			
-			<div class="grid">
-				<div class="row">
-					<div class="span12 shadow">
-						<table class="table">
-							<thead>
-								<tr>
-									<th colspan="8">ข้อมูลสมาชิก</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="selected">
-									<td class="text-right">
-										<select name="member_title" id="member_title"  required>
-											<?php echo title_dropdown();?>
-										</select>
-									</td>
-									<td class="text-right text-bold">ชื่อ</td>
-									<td><input type='text' name="member_fname" id="fname" required /></td>
-									<td class="text-right">นามสกุล</td>
-									<td><input type='text' name="member_lname" id="lname" required /></td>
-									<td class="text-right">ชื่อเล่น</td>
-									<td><input type='text' size="12" name="member_nickname" id="nickname" /></td>
-								</tr>
-								<tr class="selected">
-									<td class="table-label" colspan="2">วันเกิด</td>
-									<td class="table-input"><input type='text' name="member_dob" id="dob" readonly="readonly" required /></td>
-									<td class="text-right">นามแฝง</td>
-									<td><input type='text' name="history_alias" id="history_alias"  /></td>
-									<td class="text-right">รสนิยม</td>
-									<td>
-										<select name="history_sexual" id="history_sexual" required>
-											<?php echo sexual_dropdown();?>
-										</select>
-									</td>
-								</tr>
-								<tr class="selected">
-									<td colspan="2" class="table-label">รูปภาพ</td>
-									<td colspan="5" class="table-input"><input type="file" name="history_img" id="history_img" /></td>
-								</tr>
-								<tr class="selected">
-									<td colspan="2" class="text-right">ข้อความที่ต้องการลง</td>
-									<td colspan="5"><input type='text' name="history_info" id="history_info" size="100" required /></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div><!-- div.grid -->
-			
-			
-			<div class="grid">
-				<div class="row">
-					<div class="span12 shadow">
-						<table class="table">
-							<thead>
-								<tr>
-									<th colspan="8">ที่อยู่ตามบัตรประชาชน</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="selected">
-									<td class="table-label">ที่อยู่</td>
-									<td class="table-input" colspan="3"><input type='text' size="60" name="member_address" id="member_address" required /></td>
-									<td class="text-right">แขวง/ตำบล</td>
-									<td><input type='text' size="15" name="member_sub_district" id="member_sub_district" required /></td>
-									<td class="text-right">เขต/อำเภอ</td>
-									<td><input type='text' size="15" name="member_district" id="member_district" required /></td>
-								</tr>
-								<tr class="selected">
-									
-									<td class="table-label">จังหวัด</td>
-									<td class="table-input">
-										<select name="member_province" id="member_province" required>
-											<?php echo province_dropdown();?>
-										</select>
-									</td>
-									<td class="table-label">รหัสไปรษณีย์</td>
-									<td class="table-input"><input type="text" size="10" name="member_postcode" id="member_postcode" required /></td>
-									<td class="text-right">ประเทศ</td>
-									<td>
-										<select name="member_country" id="member_country" required>
-											<?php echo countries_dropdown();?>
-										</select>
-									</td>
-									<td class="table-label"></td>
-									<td class="table-input"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div><!-- div.grid -->
-			
-			<div class="grid">
-				<div class="row">
-					<div class="span12 shadow">
-						<table class="table">
-							<thead>
-								<tr>
-									<th colspan="8">ที่อยู่ปัจจุบันที่ใช้ติดต่อได้จริง<input type="button" value="ใช้ข้อมูลตามบัตรประชาชน" class="mini bg-lightPink bd-black" name="dup_data" id="dup_data" /></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="selected">
-									<td class="table-label">ที่อยู่</td>
-									<td class="table-input" colspan="3"><input size="55" type="text" name="contact_address" id="contact_address" required /></td>
-									<td class="text-left">แขวง/ตำบล</td>
-									<td><input type="text" size="15" name="contact_sub_district" id="contact_sub_district" required /></td>
-									<td class="text-left">เขต/อำเภอ</td>
-									<td><input type="text" size="15" name="contact_district" id="contact_district" required /></td>
-								</tr>
-								<tr class="selected">
-									<td class="table-label">จังหวัด</td>
-									<td class="table-input">
-										<select name="contact_province" id="contact_province" required>
-											<?php echo province_dropdown();?>
-										</select>
-									</td>
-									<td class="table-label">รหัสไปรษณีย์</td>
-									<td class="table-input"><input type="text" size="10" name="contact_postcode" id="contact_postcode" required /></td>
-									<td class="text-right">ประเทศ</td>
-									<td>
-										<select name="contact_country" id="contact_country" required>
-											<?php echo countries_dropdown();?>
-										</select>
-									</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr class="selected">
-									<td class="table-label">โทรศัพท์บ้าน</td>
-									<td class="table-input"><input type="text" size="15" name="contact_phone" id="contact_phone" /></td>
-									<td class="table-label">มือถือ</td>
-									<td class="table-input"><input type="text" size="15" name="contact_mobile" id="contact_mobile" /></td>
-									<td class="table-label">Email</td>
-									<td class="table-input" colspan="3"><input type="text" size="40" name="contact_email" id="contact_email" /></td>
-								</tr>
-								<tr class="selected">
-									<td class="table-label">MSN</td>
-									<td class="table-input" colspan="3"><input type="text" size="40" name="contact_msn" id="contact_msn" /></td>
-									<td class="table-label">Yahoo</td>
-									<td class="table-input" colspan="3"><input type="text" size="40" name="contact_yahoo" id="contact_yahoo" /></td>
-								</tr>
-								<tr class="selected">
-									<td class="table-label">QQ</td>
-									<td class="table-input" colspan="3"><input type="text" size="40" name="contact_qq" id="contact_qq" /></td>
-									<td class="table-label">Facebook</td>
-									<td class="table-input" colspan="3"><input type="text" size="40" name="contact_facebook" id="contact_facebook" /></td>
-								</tr>
-								<tr class="selected">
-									<td class="table-label">อื่นๆ</td>
-									<td class="table-input" colspan="7"><input type="text" size="40" name="contact_social_other" id="contact_social_other" /></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div><!-- div.grid -->
-			
-			
-			<div class="grid">
-				<div class="row">
-					<div class="span12 shadow">
-						<table class="table">
-							<thead>
-								<tr>
-									<th colspan="2">ประวัติผู้ใช้บริการ</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="selected">
-									<td class="table-label">ระดับการศึกษา</td>
-									<td class="table-input">
-										<select name="history_education" id="history_education" style="width: 200px;">
-											<?php echo education_dropdown();?>
-										</select>
-										<input type="text" size="50" placeholder="การศึกษาอื่นๆ" name="history_education_other" id="history_education_other" />
-									</td>
-								</tr>
-								<tr class="selected">	
-									<td class="table-label">อาชีพ</td>
-									<td class="table-input">
-										<select name="history_career" id="history_career" style="width: 200px;">
-											<?php echo career_dropdown();?>
-										</select>
-										<input type="text" size="50" placeholder="อาชีพอื่นๆ" name="history_career_other" id="history_career_other" />
-									</td>
-								</tr>
-								<tr class="selected">	
-									<td class="table-label">รายได้</td>
-									<td class="table-input">
-										<select name="history_salary" id="history_salary" style="width: 200px;">
-											<?php echo salary_dropdown();?>
-										</select>
-										<input type="text" size="50" placeholder="รายได้อื่นๆ" name="history_salary_other" id="history_salary_other" />
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div><!-- div.grid -->
-			
-			
-			<div class="grid">
-				<div class="row">
-					<div class="span12">
-						<table class="table shadow">
-							<thead>
-								<tr>
-									<th colspan="6">ประวัติส่วนตัว</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="selected">
-									<td>2</td>
-									<td class="table-label" style="width: 200px;">สีที่ชอบ</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q2" id="personalize_q2" /></td>
-								</tr>
-								<tr class="selected">
-									<td>3</td>
-									<td class="table-label">อาหารที่ชอบ</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q3" id="personalize_q3" /></td>
-								</tr>
-								<tr class="selected">
-									<td>4</td>
-									<td class="table-label">ของสะสม</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q4" id="personalize_q4" /></td>
-								</tr>
-								<tr class="selected">
-									<td>5</td>
-									<td class="table-label">เพลง/นักร้องที่ชอบ</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q5" id="personalize_q5" /></td>
-								</tr>
-								<tr class="selected">
-									<td>6</td>
-									<td class="table-label">สถานที่ท่องเที่ยวที่ชอบ</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q6" id="personalize_q6" /></td>
-								</tr>
-								<tr class="selected">
-									<td>7</td>
-									<td class="table-label">หนังสือที่ชอบอ่าน</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q7" id="personalize_q7" /></td>
-								</tr>
-								<tr class="selected">
-									<td>8</td>
-									<td class="table-label">งานอดิเรก</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q8" id="personalize_q8" /></td>
-								</tr>
-								<tr class="selected">
-									<td>9</td>
-									<td class="table-label">ความสามารถพิเศษ</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q9" id="personalize_q9" /></td>
-								</tr>
-								<tr class="selected">
-									<td>10</td>
-									<td class="table-label">ฮีโร่ในดวงใจ</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q10" id="personalize_q10" /></td>
-								</tr>
-								<tr class="selected">
-									<td>11</td>
-									<td class="table-label">สิ่งที่เกลียดที่สุด</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q11" id="personalize_q11" /></td>
-								</tr>
-								<tr class="selected">
-									<td>12</td>
-									<td class="table-label">เรื่องดีๆที่เคยทำ</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q12" id="personalize_q12" /></td>
-								</tr>
-								<tr class="selected">
-									<td>13</td>
-									<td class="table-label">เรื่องแย่ๆที่เคยทำ</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q13" id="personalize_q13" /></td>
-								</tr>
-								<tr class="selected">
-									<td>14</td>
-									<td class="table-label">วิธีจัดการกับปัญหา</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q14" id="personalize_q14" /></td>
-								</tr>
-								<tr class="selected">
-									<td>15</td>
-									<td class="table-label">วิธีจัดการกับความเหงา</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q15" id="personalize_q15" /></td>
-								</tr>
-								<tr class="selected">
-									<td>16</td>
-									<td class="table-label">คำแนะนำที่ดีที่สุดที่เคยได้รับ</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q16" id="personalize_q16" /></td>
-								</tr>
-								<tr class="selected">
-									<td>17</td>
-									<td class="table-label">เพื่อนที่ "ใช่เลย" สำหรับคุณคือเพื่อน</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q17" id="personalize_q17" /></td>
-								</tr>
-								<tr class="selected">
-									<td>18</td>
-									<td class="table-label">คนรักที่ "ใช่เลย" ในความหมายเป็นคนแบบไหน</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q18" id="personalize_q18" /></td>
-								</tr>
-								<tr class="selected">
-									<td>18.1</td>
-									<td class="table-label">รูปร่างหน้าตา</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q18.1" id="personalize_q18.1" /></td>
-								</tr>
-								<tr class="selected">
-									<td>18.2</td>
-									<td class="table-label">นิสัย</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q18.2" id="personalize_q18.2" /></td>
-								</tr>
-								<tr class="selected">
-									<td>19</td>
-									<td class="table-label">วิธีบอกรัก</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q19" id="personalize_q19" /></td>
-								</tr>
-								<tr class="selected">
-									<td>20</td>
-									<td class="table-label">นิยามรัก</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q20" id="personalize_q20" /></td>
-								</tr>
-								<tr class="selected">
-									<td>21</td>
-									<td class="table-label">คำพูดติดปาก</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q21" id="personalize_q21" /></td>
-								</tr>
-								<tr class="selected">
-									<td>22</td>
-									<td class="table-label">คติประจำตัว</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q22" id="personalize_q22" /></td>
-								</tr>
-								<tr class="selected">
-									<td>23</td>
-									<td class="table-label"> 	เป้าหมายสูงสุดในชีวิต</td>
-									<td class="table-input"><input type="text" size="80" name="personalize_q23" id="personalize_q23" /></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div><!-- div.grid -->
-			
-			<div class="grid">
-				<div class="row">
-					<div class="span12 text-center">
-						<div class="error">
-							<span></span>
-						</div>
-						<input type="submit" value="บันทึกข้อมูล" class="button bg-cobalt fg-white large shadow" />
-						<input type="button" value="ยกเลิก" class="button bg-red fg-white large shadow" name="cancel" id="cancel" />
-					</div>
-				</div>
-			</div>
-		</form>
-		<?php endif;?>	
-	
 	</div> <!-- end div.container -->
 
 </body>

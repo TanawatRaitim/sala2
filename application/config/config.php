@@ -45,6 +45,12 @@ $config['jquery_validation_additional'] = 'js/jquery_validation/dist/additional-
 $config['css'] = 'css/style.css';
 
 
+$config['alertify_base'] = 'js/alertify/themes/alertify.core.css';
+$config['alertify_default'] = 'js/alertify/themes/alertify.default.css';
+$config['alertify_js'] = 'js/alertify/lib/alertify.min.js';
+
+
+
 
 
 
