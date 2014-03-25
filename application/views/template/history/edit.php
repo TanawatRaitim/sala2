@@ -18,9 +18,7 @@
 
     <title><?php echo $title; ?></title>
     <script>
-    		
 		$(function(){
-			
 			$('input, select').keydown( function (event) { //event==Keyevent
 			    if(event.which == 13) {
 			        var inputs = $(this).closest('form').find(':input:visible');
@@ -31,8 +29,9 @@
 			});
 			// if is not work search on google PlusAs Tab****
 					
+					
+			// duplication data from idcard address to current contact			
 			$("#dup_data").click(function(){
-				
 				$("#contact_address").val($("#member_address").val()).effect("highlight","slow");
 				$("#contact_sub_district").val($("#member_sub_district").val()).effect("highlight","slow");
 				$("#contact_district").val($("#member_district").val()).effect("highlight","slow");
@@ -41,8 +40,6 @@
 				$("#contact_country").val($("#member_country").val()).effect("highlight","slow");
 
 			});
-			
-			//var jqueryNC = jQuery.noConflict();
 			
 			$.datepicker.regional['th'] ={
 		        changeMonth: true,
@@ -62,8 +59,6 @@
 			
 			$( "#dob" ).datepicker( $.datepicker.regional["th"] );   // บอกให้ใช้ Propertie ภาษาที่เรานิยามไว้
     		$( "#dob" ).datepicker();                                 //Innit DatePicker ไปที่ Control ที่มี ID = datepicker
-			
-
 			
 			$.validator.addMethod(
 				"title",
@@ -218,7 +213,6 @@
 	
 	<div class="container" style="margin-top: 70px;"><!-- div.container -->
 		<h2><i class="icon-user fg-magenta"></i> แก้ไขข้อมูล </h2>
-			
 		<form action="<?php echo site_url('history/update');?>" method="post" enctype="multipart/form-data" name="form_edit_member" id="form_edit_member">
 			<input type="hidden" name="member_idcard" id="member_idcard" value="<?php echo $member_info[0]['idcard'];?>" />
 			<input type="hidden" name="member_code" id="member_code" value="<?php echo $member_info[0]['member_code'];?>" />
@@ -231,9 +225,9 @@
 				<div class="row">
 					<div class="span2">
 						<?php if ($history_info[0]['image']): ?>
-							<img class="cycle shadow" src="<?php echo $this->config->item('base_history_thumbs').$history_info[0]['image'];?>">
+							<img class="rounded shadow" src="<?php echo $this->config->item('base_history_thumbs').$history_info[0]['image'];?>">
 						<?php else: ?>
-							<img class="cycle shadow" src="<?php echo $this->config->item('base_assets_images');?>no_img.png">
+							<img class="rounded shadow" src="<?php echo $this->config->item('base_assets_images');?>no_img.png">
 						<?php endif ?>
 					</div>
 					<div class="span6">
@@ -250,6 +244,10 @@
 							<tr>
 								<td>รหัสสมาชิก : </td>
 								<td><?php echo $member_info[0]['member_code'];?></td>
+							</tr>
+							<tr>
+								<td>ข้อมูลเมื่อวันที่ : </td>
+								<td><?php echo mysql2thaidate(date("Y-m-d",strtotime($history_info[0]['create_date'])));?></td>
 							</tr>
 						</table>	
 					</div>
@@ -632,7 +630,7 @@
 							<span></span>
 						</div>
 						<input type="submit" value="แก้ไขข้อมูล" class="button bg-cobalt fg-white large shadow" />
-						<input type="button" id="cancel" name="cancel" value="ยกเลิก" class="button bg-red fg-white large shadow" />
+						<a href="<?php echo base_url();?>main/index/<?php echo $this->session->userdata('page_main');?>" id="cancel" name="cancel" class="button bg-red fg-white large shadow"">ยกเลิก</a>
 					</div>
 				</div>
 			</div>

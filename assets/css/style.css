@@ -1,10 +1,7 @@
-
 .text-underline{
 	text-decoration: underline;
 }
 input.error{
-
-	/*outline: 2px red solid;*/
 	border: 2px solid red;
 }
 
@@ -14,13 +11,9 @@ span#idcard_error{
 
 td.table-label{
 	text-align: right;
-	/*color: red;*/
-	/*background-color: yellow;*/
-	/*font-weight: bolder;*/
 }
 
 input[type='text']{
-	/*color: red;*/
 	padding: 5px;
 }
 
@@ -33,10 +26,17 @@ select.error{
 }
 
 div.error span{
-	/*height: 100px;*/
-	/*border: 1px solid red;*/
+	
 }
 
 span#idcard_error{
 	color: red;
+}
+
+div.container{
+	padding-bottom: 200px;
+}
+
+table#history_data tr td{
+	vertical-align: middle;
 }

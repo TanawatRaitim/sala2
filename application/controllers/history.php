@@ -30,14 +30,12 @@ class History extends CI_Controller {
 		$this->load->view('template/history/check_idcard',$this->data);	
 	}
 	
-	
 	public function addnew()
 	{
 		
 		$this->load->library('member');
 		$this->data['title'] = 'History Add New';
 
-		
 		//check member
 		$this->member->set_idcard($this->input->post('idcard'));
 		$is_member = $this->member->is_member();
@@ -59,7 +57,6 @@ class History extends CI_Controller {
 		$this->load->library('member');
 		$this->data['title'] = 'History Add New';
 
-		
 		//check member
 		$this->member->set_history_id($history_id);
 		$is_member = $this->member->is_member();
@@ -81,8 +78,13 @@ class History extends CI_Controller {
 		
 		if($history_id)
 		{
-			$this->session->set_flashdata('insert_message','Insert successful');
-			redirect('','refresh');
+			$this->session->set_flashdata('message','เพิ่มข้อมูลใหม่เรียบร้อยแล้ว');
+			if($this->session->userdata('previous_url') == "")
+			{
+				redirect('','refresh');
+			}else{
+				redirect($this->session->userdata('previous_url'),'refresh');
+			}
 			
 		}else{
 			echo 'ไม่สามารถบันทึกข้อมูลได้โปรดติดต่อ Admin';
@@ -92,12 +94,9 @@ class History extends CI_Controller {
 
 	public function edit($history_id)
 	{
-		//echo $this->session->flashdata('insert_message');
-		
+
 		$this->load->library('member');
 		$this->data['title'] = 'History Edit';
-		
-		//$this->member->set_idcard($this->input->post('idcard'));
 		$this->member->set_history_id($history_id);
 		
 		$this->data['member_info'] = $this->member->get_member_info();
@@ -109,6 +108,32 @@ class History extends CI_Controller {
 		
 	}
 	
+	public function memberhistory($history_id)
+	{
+		//echo $history_id;
+		
+		//like edit
+		
+		//and get all member history
+		$this->load->library('member');
+		$this->data['title'] = 'History Edit';
+		$this->member->set_history_id($history_id);
+		
+		$this->data['member_info'] = $this->member->get_member_info();
+		$this->data['history_info'] = $this->member->get_history_info();
+		$this->data['personalize_info'] = $this->member->get_personalize_info();
+		$this->data['contact_info'] = $this->member->get_contact_info();
+		
+		
+		//get all member history
+		$this->data['member_history'] = $this->member->get_all_member_history();
+		
+		$this->load->view('template/history/memberhistory',$this->data);
+
+	}
+	
+	
+	
 	public function update()
 	{
 		$this->load->library('member');
@@ -116,10 +141,15 @@ class History extends CI_Controller {
 		
 		if($history_id)
 		{
-			$this->session->set_flashdata('update_message','Update successful');
-			echo 'update successful';
-			//redirect to edit page
-			//redirect('','refresh');
+			$this->session->set_flashdata('message','แก้ไขข้อมูลเรียบร้อยแล้ว');
+			
+			if($this->session->userdata('previous_url') == "")
+			{
+				redirect('','refresh');
+			}else{
+				// redirect("main/index/".$this->session->userdata('page_main'),'refresh');
+				redirect($this->session->userdata('previous_url'),'refresh');
+			}
 			
 		}else{
 			echo 'ไม่สามารถบันทึกข้อมูลได้โปรดติดต่อ Admin';
@@ -156,6 +186,8 @@ class History extends CI_Controller {
 		}
 		
 	}
+	
+
 
 	public function test()
 	{

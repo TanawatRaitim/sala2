@@ -1,12 +1,13 @@
 <?php
 	class Member_model extends CI_Model{
 		
+		private $search_row;
+		
 		public function __construct()
 		{
 			parent::__construct();
 		}
 
-		
 		public function is_member($idcard)
 		{
 			$this->db->select('idcard');
@@ -28,6 +29,29 @@
 			$this->db->order_by('id','desc');
 			$this->db->limit(1);
 			return $this->db->get('members');
+		}
+		
+		public function get_all_member_history($member_id)
+		{
+			
+			$sql = "SELECT members.id as member_id, history.id as history_id, members.idcard, members.member_code, CONCAT(members.title,' ',members.fname,' ',members.lname) as member_name,
+					(YEAR(CURDATE())-YEAR(members.dob)) as age, provinces.name as province, 
+					books.name as book, issues.name as issue, history.volume, history.info, history.image, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
+					DATE_FORMAT(history.create_date,'%Y-%m-%d') as history_date   
+					FROM history 
+					LEFT JOIN members ON(members.id = history.member_id)
+					LEFT JOIN sexual ON(sexual.id = history.sexual_id)
+					LEFT JOIN provinces ON(provinces.code = members.province_id)
+					LEFT JOIN books ON(books.id = history.book_id)
+					LEFT JOIN issues ON(issues.id = history.issue_id)
+					WHERE member_id = $member_id
+					ORDER BY history.id DESC
+					";
+			
+			$query = $this->db->query($sql);
+			
+			return $query;
+			
 		}
 		
 		public function get_personalize($personalize_id)
@@ -68,15 +92,13 @@
 			return $this->db->get('history');
 		}
 		
-		
-		
 		public function get_all_history($perpage, $offset)
 		{
 			
-			$sql = "SELECT history.id as history_id, members.idcard, members.member_code, CONCAT(members.title,' ',members.fname,' ',members.lname) as member_name,
+			$sql = "SELECT members.id as member_id, history.id as history_id, members.idcard, members.member_code, CONCAT(members.title,' ',members.fname,' ',members.lname) as member_name,
 					(YEAR(CURDATE())-YEAR(members.dob)) as age, provinces.name as province, 
-					books.name as book, issues.name as issue, history.volume, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
-					DATE_FORMAT(history.create_date,'%d-%m-%Y') as history_date   
+					books.name as book, issues.name as issue, history.volume, history.image, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
+					DATE_FORMAT(history.create_date,'%Y-%m-%d') as history_date   
 					FROM history 
 					LEFT JOIN members ON(members.id = history.member_id)
 					LEFT JOIN sexual ON(sexual.id = history.sexual_id)
@@ -94,13 +116,54 @@
 				
 				$limit = " LIMIT $perpage";
 			}
-						
 			
 			$sql .= $limit;
 			
 			$query = $this->db->query($sql);
 			
 			return $query;
+		}
+
+		
+		public function main_search($keyword, $perpage, $offset)
+		{
+			$keyword = urldecode($keyword);
+			$sql = "SELECT members.id as member_id, history.id as history_id, members.idcard, members.member_code, CONCAT(members.title,' ',members.fname,' ',members.lname) as member_name,
+					(YEAR(CURDATE())-YEAR(members.dob)) as age, provinces.name as province, 
+					books.name as book, issues.name as issue, history.volume, history.image, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
+					DATE_FORMAT(history.create_date,'%Y-%m-%d') as history_date   
+					FROM history 
+					LEFT JOIN members ON(members.id = history.member_id)
+					LEFT JOIN sexual ON(sexual.id = history.sexual_id)
+					LEFT JOIN provinces ON(provinces.code = members.province_id)
+					LEFT JOIN books ON(books.id = history.book_id)
+					LEFT JOIN issues ON(issues.id = history.issue_id)
+					WHERE CONCAT(members.title,' ',members.fname,' ',members.lname) like '%$keyword%' or members.idcard like '%$keyword%' or members.member_code like '%$keyword%' or books.name like '%$keyword%'
+					or issues.name like '%$keyword%' or history.volume like '%$keyword%'
+					ORDER BY history.id DESC
+					";
+			$query = $this->db->query($sql);
+			//all rows
+			$this->search_row = $query->num_rows();
+			
+			if($offset)
+			{
+				$limit = " LIMIT $offset, $perpage";
+			}
+			else{
+				
+				$limit = " LIMIT $perpage";
+			}
+						
+			$sql .= $limit;
+			$query = $this->db->query($sql);
+			
+			return $query;
+		}
+		
+		public function get_search_rows()
+		{
+			return $this->search_row;
 		}
 
 		public function get_blank($table)
@@ -118,7 +181,6 @@
 		 
 		public function add_old_member()
 		{
-			
 			//update member
 			$update_date = date("Y-m-d H:i:s");
 			$member = array(
@@ -140,8 +202,6 @@
 							);
 			$this->db->where('id',$this->input->post('member_id'));
 			$this->db->update('members',$member);
-			
-			
 			
 			//insert contact
 			$contact = array(
@@ -170,35 +230,34 @@
 			$this->db->insert('contacts',$contact);
 			$contact_id = $this->db->insert_id();			
 			
-			
 			//insert personalize
 			$personalize = array(
 							'member_id'=>trim($this->input->post('member_id')),
-							'q2'=>trim($this->input->post('personalize_q2')),
-							'q3'=>trim($this->input->post('personalize_q3')),
-							'q4'=>trim($this->input->post('personalize_q4')),
-							'q5'=>trim($this->input->post('personalize_q5')),
-							'q6'=>trim($this->input->post('personalize_q6')),
-							'q7'=>trim($this->input->post('personalize_q7')),
-							'q8'=>trim($this->input->post('personalize_q8')),
-							'q9'=>trim($this->input->post('personalize_q9')),
-							'q10'=>trim($this->input->post('personalize_q10')),
-							'q11'=>trim($this->input->post('personalize_q11')),
-							'q12'=>trim($this->input->post('personalize_q12')),
-							'q13'=>trim($this->input->post('personalize_q13')),
-							'q14'=>trim($this->input->post('personalize_q14')),
-							'q15'=>trim($this->input->post('personalize_q15')),
-							'q16'=>trim($this->input->post('personalize_q16')),
-							'q17'=>trim($this->input->post('personalize_q17')),
-							'q18'=>trim($this->input->post('personalize_q18')),
-							'q18_1'=>trim($this->input->post('personalize_q18_1')),
-							'q18_2'=>trim($this->input->post('personalize_q18_2')),
-							'q19'=>trim($this->input->post('personalize_q19')),
-							'q20'=>trim($this->input->post('personalize_q20')),
-							'q21'=>trim($this->input->post('personalize_q21')),
-							'q22'=>trim($this->input->post('personalize_q22')),
-							'q23'=>trim($this->input->post('personalize_q23')),
-							'q24'=>trim($this->input->post('personalize_q24')),
+							'q2'=>trim(quotes_to_entities($this->input->post('personalize_q2'))),
+							'q3'=>trim(quotes_to_entities($this->input->post('personalize_q3'))),
+							'q4'=>trim(quotes_to_entities($this->input->post('personalize_q4'))),
+							'q5'=>trim(quotes_to_entities($this->input->post('personalize_q5'))),
+							'q6'=>trim(quotes_to_entities($this->input->post('personalize_q6'))),
+							'q7'=>trim(quotes_to_entities($this->input->post('personalize_q7'))),
+							'q8'=>trim(quotes_to_entities($this->input->post('personalize_q8'))),
+							'q9'=>trim(quotes_to_entities($this->input->post('personalize_q9'))),
+							'q10'=>trim(quotes_to_entities($this->input->post('personalize_q10'))),
+							'q11'=>trim(quotes_to_entities($this->input->post('personalize_q11'))),
+							'q12'=>trim(quotes_to_entities($this->input->post('personalize_q12'))),
+							'q13'=>trim(quotes_to_entities($this->input->post('personalize_q13'))),
+							'q14'=>trim(quotes_to_entities($this->input->post('personalize_q14'))),
+							'q15'=>trim(quotes_to_entities($this->input->post('personalize_q15'))),
+							'q16'=>trim(quotes_to_entities($this->input->post('personalize_q16'))),
+							'q17'=>trim(quotes_to_entities($this->input->post('personalize_q17'))),
+							'q18'=>trim(quotes_to_entities($this->input->post('personalize_q18'))),
+							'q18_1'=>trim(quotes_to_entities($this->input->post('personalize_q18_1'))),
+							'q18_2'=>trim(quotes_to_entities($this->input->post('personalize_q18_2'))),
+							'q19'=>trim(quotes_to_entities($this->input->post('personalize_q19'))),
+							'q20'=>trim(quotes_to_entities($this->input->post('personalize_q20'))),
+							'q21'=>trim(quotes_to_entities($this->input->post('personalize_q21'))),
+							'q22'=>trim(quotes_to_entities($this->input->post('personalize_q22'))),
+							'q23'=>trim(quotes_to_entities($this->input->post('personalize_q23'))),
+							'q24'=>trim(quotes_to_entities($this->input->post('personalize_q24'))),
 							'create_date'=>$update_date,
 							'create_by'=>$this->session->userdata('user_id'),
 							'update_date'=>$update_date,
@@ -209,10 +268,7 @@
 			$this->db->insert('personalize',$personalize);
 			$personalize_id = $this->db->insert_id();
 					
-			
-			
 			//insert history
-			
 			$history = array(
 							'member_id'=>trim($this->input->post('member_id')),
 							'contact_id'=>$contact_id,
@@ -228,7 +284,7 @@
 							'salary_id'=>trim($this->input->post('history_salary')),
 							'salary_other'=>trim($this->input->post('history_salary_other')),
 							'alias'=>trim($this->input->post('history_alias')),
-							'info'=>trim($this->input->post('history_info')),
+							'info'=>trim(quotes_to_entities($this->input->post('history_info'))),
 							'create_date'=>$update_date,
 							'create_by'=>$this->session->userdata('user_id'),
 							'update_date'=>$update_date,
@@ -239,7 +295,6 @@
 			
 			$this->db->insert('history',$history);
 			$history_id = $this->db->insert_id();
-			
 			
 			//upload image
 			/*	upload to member ?	*/
@@ -260,7 +315,6 @@
 			
 			return $history_id;
 			
-						
 		}
 		
 		/**
@@ -331,31 +385,31 @@
 			//insert personalize
 			$personalize = array(
 							'member_id'=>$member_id,
-							'q2'=>trim($this->input->post('personalize_q2')),
-							'q3'=>trim($this->input->post('personalize_q3')),
-							'q4'=>trim($this->input->post('personalize_q4')),
-							'q5'=>trim($this->input->post('personalize_q5')),
-							'q6'=>trim($this->input->post('personalize_q6')),
-							'q7'=>trim($this->input->post('personalize_q7')),
-							'q8'=>trim($this->input->post('personalize_q8')),
-							'q9'=>trim($this->input->post('personalize_q9')),
-							'q10'=>trim($this->input->post('personalize_q10')),
-							'q11'=>trim($this->input->post('personalize_q11')),
-							'q12'=>trim($this->input->post('personalize_q12')),
-							'q13'=>trim($this->input->post('personalize_q13')),
-							'q14'=>trim($this->input->post('personalize_q14')),
-							'q15'=>trim($this->input->post('personalize_q15')),
-							'q16'=>trim($this->input->post('personalize_q16')),
-							'q17'=>trim($this->input->post('personalize_q17')),
-							'q18'=>trim($this->input->post('personalize_q18')),
-							'q18_1'=>trim($this->input->post('personalize_q18_1')),
-							'q18_2'=>trim($this->input->post('personalize_q18_2')),
-							'q19'=>trim($this->input->post('personalize_q19')),
-							'q20'=>trim($this->input->post('personalize_q20')),
-							'q21'=>trim($this->input->post('personalize_q21')),
-							'q22'=>trim($this->input->post('personalize_q22')),
-							'q23'=>trim($this->input->post('personalize_q23')),
-							'q24'=>trim($this->input->post('personalize_q24')),
+							'q2'=>trim(quotes_to_entities($this->input->post('personalize_q2'))),
+							'q3'=>trim(quotes_to_entities($this->input->post('personalize_q3'))),
+							'q4'=>trim(quotes_to_entities($this->input->post('personalize_q4'))),
+							'q5'=>trim(quotes_to_entities($this->input->post('personalize_q5'))),
+							'q6'=>trim(quotes_to_entities($this->input->post('personalize_q6'))),
+							'q7'=>trim(quotes_to_entities($this->input->post('personalize_q7'))),
+							'q8'=>trim(quotes_to_entities($this->input->post('personalize_q8'))),
+							'q9'=>trim(quotes_to_entities($this->input->post('personalize_q9'))),
+							'q10'=>trim(quotes_to_entities($this->input->post('personalize_q10'))),
+							'q11'=>trim(quotes_to_entities($this->input->post('personalize_q11'))),
+							'q12'=>trim(quotes_to_entities($this->input->post('personalize_q12'))),
+							'q13'=>trim(quotes_to_entities($this->input->post('personalize_q13'))),
+							'q14'=>trim(quotes_to_entities($this->input->post('personalize_q14'))),
+							'q15'=>trim(quotes_to_entities($this->input->post('personalize_q15'))),
+							'q16'=>trim(quotes_to_entities($this->input->post('personalize_q16'))),
+							'q17'=>trim(quotes_to_entities($this->input->post('personalize_q17'))),
+							'q18'=>trim(quotes_to_entities($this->input->post('personalize_q18'))),
+							'q18_1'=>trim(quotes_to_entities($this->input->post('personalize_q18_1'))),
+							'q18_2'=>trim(quotes_to_entities($this->input->post('personalize_q18_2'))),
+							'q19'=>trim(quotes_to_entities($this->input->post('personalize_q19'))),
+							'q20'=>trim(quotes_to_entities($this->input->post('personalize_q20'))),
+							'q21'=>trim(quotes_to_entities($this->input->post('personalize_q21'))),
+							'q22'=>trim(quotes_to_entities($this->input->post('personalize_q22'))),
+							'q23'=>trim(quotes_to_entities($this->input->post('personalize_q23'))),
+							'q24'=>trim(quotes_to_entities($this->input->post('personalize_q24'))),
 							'create_date'=>$update_date,
 							'create_by'=>$this->session->userdata('user_id'),
 							'update_date'=>$update_date,
@@ -382,7 +436,7 @@
 							'salary_id'=>trim($this->input->post('history_salary')),
 							'salary_other'=>trim($this->input->post('history_salary_other')),
 							'alias'=>trim($this->input->post('history_alias')),
-							'info'=>trim($this->input->post('history_info')),
+							'info'=>trim(quotes_to_entities($this->input->post('history_info'))),
 							'create_date'=>$update_date,
 							'create_by'=>$this->session->userdata('user_id'),
 							'update_date'=>$update_date,
@@ -441,8 +495,6 @@
 			$this->db->where('id',$this->input->post('member_id'));
 			$this->db->update('members',$member);
 			
-			
-			
 			//update contact
 			$contact = array(
 							'member_id'=>trim($this->input->post('member_id')),
@@ -474,31 +526,31 @@
 			//update personalize
 			$personalize = array(
 							'member_id'=>trim($this->input->post('member_id')),
-							'q2'=>trim($this->input->post('personalize_q2')),
-							'q3'=>trim($this->input->post('personalize_q3')),
-							'q4'=>trim($this->input->post('personalize_q4')),
-							'q5'=>trim($this->input->post('personalize_q5')),
-							'q6'=>trim($this->input->post('personalize_q6')),
-							'q7'=>trim($this->input->post('personalize_q7')),
-							'q8'=>trim($this->input->post('personalize_q8')),
-							'q9'=>trim($this->input->post('personalize_q9')),
-							'q10'=>trim($this->input->post('personalize_q10')),
-							'q11'=>trim($this->input->post('personalize_q11')),
-							'q12'=>trim($this->input->post('personalize_q12')),
-							'q13'=>trim($this->input->post('personalize_q13')),
-							'q14'=>trim($this->input->post('personalize_q14')),
-							'q15'=>trim($this->input->post('personalize_q15')),
-							'q16'=>trim($this->input->post('personalize_q16')),
-							'q17'=>trim($this->input->post('personalize_q17')),
-							'q18'=>trim($this->input->post('personalize_q18')),
-							'q18_1'=>trim($this->input->post('personalize_q18_1')),
-							'q18_2'=>trim($this->input->post('personalize_q18_2')),
-							'q19'=>trim($this->input->post('personalize_q19')),
-							'q20'=>trim($this->input->post('personalize_q20')),
-							'q21'=>trim($this->input->post('personalize_q21')),
-							'q22'=>trim($this->input->post('personalize_q22')),
-							'q23'=>trim($this->input->post('personalize_q23')),
-							'q24'=>trim($this->input->post('personalize_q24')),
+							'q2'=>trim(quotes_to_entities($this->input->post('personalize_q2'))),
+							'q3'=>trim(quotes_to_entities($this->input->post('personalize_q3'))),
+							'q4'=>trim(quotes_to_entities($this->input->post('personalize_q4'))),
+							'q5'=>trim(quotes_to_entities($this->input->post('personalize_q5'))),
+							'q6'=>trim(quotes_to_entities($this->input->post('personalize_q6'))),
+							'q7'=>trim(quotes_to_entities($this->input->post('personalize_q7'))),
+							'q8'=>trim(quotes_to_entities($this->input->post('personalize_q8'))),
+							'q9'=>trim(quotes_to_entities($this->input->post('personalize_q9'))),
+							'q10'=>trim(quotes_to_entities($this->input->post('personalize_q10'))),
+							'q11'=>trim(quotes_to_entities($this->input->post('personalize_q11'))),
+							'q12'=>trim(quotes_to_entities($this->input->post('personalize_q12'))),
+							'q13'=>trim(quotes_to_entities($this->input->post('personalize_q13'))),
+							'q14'=>trim(quotes_to_entities($this->input->post('personalize_q14'))),
+							'q15'=>trim(quotes_to_entities($this->input->post('personalize_q15'))),
+							'q16'=>trim(quotes_to_entities($this->input->post('personalize_q16'))),
+							'q17'=>trim(quotes_to_entities($this->input->post('personalize_q17'))),
+							'q18'=>trim(quotes_to_entities($this->input->post('personalize_q18'))),
+							'q18_1'=>trim(quotes_to_entities($this->input->post('personalize_q18_1'))),
+							'q18_2'=>trim(quotes_to_entities($this->input->post('personalize_q18_2'))),
+							'q19'=>trim(quotes_to_entities($this->input->post('personalize_q19'))),
+							'q20'=>trim(quotes_to_entities($this->input->post('personalize_q20'))),
+							'q21'=>trim(quotes_to_entities($this->input->post('personalize_q21'))),
+							'q22'=>trim(quotes_to_entities($this->input->post('personalize_q22'))),
+							'q23'=>trim(quotes_to_entities($this->input->post('personalize_q23'))),
+							'q24'=>trim(quotes_to_entities($this->input->post('personalize_q24'))),
 							// 'create_date'=>$update_date,
 							// 'create_by'=>$this->session->userdata('user_id'),
 							'update_date'=>$update_date,
@@ -527,7 +579,7 @@
 							'salary_id'=>trim($this->input->post('history_salary')),
 							'salary_other'=>trim($this->input->post('history_salary_other')),
 							'alias'=>trim($this->input->post('history_alias')),
-							'info'=>trim($this->input->post('history_info')),
+							'info'=>trim(quotes_to_entities($this->input->post('history_info'))),
 							// 'create_date'=>$update_date,
 							// 'create_by'=>$this->session->userdata('user_id'),
 							'update_date'=>$update_date,
@@ -708,7 +760,7 @@
 			}
 			
 		}
-		
-		
-		
+			
 	}	
+	
+/* End of file member_model.php */	

@@ -32,11 +32,8 @@ class Member {
 	
     public function index()
     {
-    	
-    	//$ci->load->library('session');
-		//print_r($ci->session->userdata);
+
 	}
-	
 	
 	public function set_idcard($idcard)
 	{
@@ -46,7 +43,6 @@ class Member {
 		$member = $this->ci->member_model->get_member($this->id_card);
 		
 		$this->member_info = $member->result_array();
-		
 		
 		foreach($member->result_array() as $info)
 		{
@@ -87,7 +83,6 @@ class Member {
 		
 		$this->member_info = $member->result_array();
 		
-		
 		foreach($member->result_array() as $info)
 		{
 			$this->member_id = $info['id'];
@@ -125,9 +120,10 @@ class Member {
 		return $this->member_info;
 	}
 	
-	public function has_history()
+	public function get_all_member_history()
 	{
-		
+		$all_history = $this->ci->member_model->get_all_member_history($this->member_id);
+		return $all_history->result_array();
 	}
 	
 	public function get_last_history_info()
@@ -185,9 +181,6 @@ class Member {
 	
 	public function update()
 	{
-		//echo 'class member->update';
-		//exit();
-		
 		$history_id = $this->ci->member_model->update_history();
 		return $history_id;
 	}
@@ -203,9 +196,7 @@ class Member {
 	{
 		return $this->ci->member_model->get_idcard_from_history($history_id);
 	}
-	
-	
-	
+		
 }
 
 /* End of file Member.php */

@@ -39,14 +39,8 @@
 				$("#contact_province").val($("#member_province").val()).effect("highlight","slow");
 				$("#contact_postcode").val($("#member_postcode").val()).effect("highlight","slow");
 				$("#contact_country").val($("#member_country").val()).effect("highlight","slow");
-				// $("#").val($("#").val());
-				
-				
-				//alert('function is in progress');
-				//return false;
 			});
 			
-			//var jqueryNC = jQuery.noConflict();
 			
 			$.datepicker.regional['th'] ={
 		        changeMonth: true,
@@ -63,11 +57,8 @@
 		    };
 		
 		    $.datepicker.setDefaults($.datepicker.regional['th']);
-			
 			$( "#dob" ).datepicker( $.datepicker.regional["th"] );   // บอกให้ใช้ Propertie ภาษาที่เรานิยามไว้
     		$( "#dob" ).datepicker();                                 //Innit DatePicker ไปที่ Control ที่มี ID = datepicker
-			
-
 			
 			$.validator.addMethod(
 				"title",
@@ -100,7 +91,6 @@
 						content: 'ข้อมูลไม่ถูกต้อง กรุณาตรวจสอบข้อมูลใหม่ </br>'
 						});
 					
-					//alert('กรุณาตรวจสอบข้อมูล');
 					$("html, body").animate({ scrollTop: 100 }, "fast");//new
 					
 					/*
@@ -143,9 +133,6 @@
 					        // user clicked "cancel"
 					        return false;
 					    }
-					    
-					    
-					    
 					});
 					
 				},
@@ -252,9 +239,9 @@
 				<div class="row">
 					<div class="span2">
 						<?php if ($history_info[0]['image']): ?>
-							<img class="cycle shadow" src="<?php echo $this->config->item('base_history_thumbs').$history_info[0]['image'];?>">
+							<img class="rounded shadow" src="<?php echo $this->config->item('base_history_thumbs').$history_info[0]['image'];?>">
 						<?php else: ?>
-							<img class="cycle shadow" src="<?php echo $this->config->item('base_assets_images');?>no_img.png">
+							<img class="rounded shadow" src="<?php echo $this->config->item('base_assets_images');?>no_img.png">
 						<?php endif ?>
 					</div>
 					<div class="span6">
@@ -271,6 +258,10 @@
 							<tr>
 								<td>รหัสสมาชิก : </td>
 								<td><?php echo $member_info[0]['member_code'];?></td>
+							</tr>
+							<tr>
+								<td>ข้อมูลเมื่อวันที่ : </td>
+								<td><?php echo mysql2thaidate(date("Y-m-d",strtotime($history_info[0]['create_date'])));?></td>
 							</tr>
 						</table>	
 					</div>
@@ -303,7 +294,6 @@
 					</div>
 				</div>
 			</div><!-- div.grid -->
-			
 			
 			<div class="grid">
 				<div class="row">
@@ -353,7 +343,6 @@
 					</div>
 				</div>
 			</div><!-- div.grid -->
-			
 			
 			<div class="grid">
 				<div class="row">
@@ -465,7 +454,6 @@
 				</div>
 			</div><!-- div.grid -->
 			
-			
 			<div class="grid">
 				<div class="row">
 					<div class="span12 shadow">
@@ -508,7 +496,6 @@
 					</div>
 				</div>
 			</div><!-- div.grid -->
-			
 			
 			<div class="grid">
 				<div class="row">
@@ -653,7 +640,7 @@
 							<span></span>
 						</div>
 						<input type="submit" value="บันทึกข้อมูล" class="button bg-cobalt fg-white large shadow" />
-						<input type="button" id="cancel" name="cancel" value="ยกเลิก" class="button bg-red fg-white large shadow" />
+						<a href="<?php echo base_url();?>main/index/<?php echo $this->session->userdata('page_main');?>" id="cancel" name="cancel" class="button bg-red fg-white large shadow"">ยกเลิก</a>
 					</div>
 				</div>
 			</div>
@@ -714,7 +701,6 @@
 				</div>
 			</div><!-- div.grid -->
 			
-			
 			<div class="grid">
 				<div class="row">
 					<div class="span12 shadow">
@@ -763,7 +749,6 @@
 					</div>
 				</div>
 			</div><!-- div.grid -->
-			
 			
 			<div class="grid">
 				<div class="row">
@@ -874,7 +859,6 @@
 				</div>
 			</div><!-- div.grid -->
 			
-			
 			<div class="grid">
 				<div class="row">
 					<div class="span12 shadow">
@@ -917,7 +901,6 @@
 					</div>
 				</div>
 			</div><!-- div.grid -->
-			
 			
 			<div class="grid">
 				<div class="row">
@@ -1062,7 +1045,7 @@
 							<span></span>
 						</div>
 						<input type="submit" value="บันทึกข้อมูล" class="button bg-cobalt fg-white large shadow" />
-						<input type="button" value="ยกเลิก" class="button bg-red fg-white large shadow" name="cancel" id="cancel" />
+						<a href="<?php echo base_url();?>main/index/<?php echo $this->session->userdata('page_main');?>" id="cancel" name="cancel" class="button bg-red fg-white large shadow"">ยกเลิก</a>
 					</div>
 				</div>
 			</div>
