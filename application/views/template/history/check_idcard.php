@@ -74,7 +74,7 @@
 		<div class="grid">
 			<div class="row">
 				<div class="span12">
-					<form method="post" name="form_idcard" id="form_idcard" action="http://172.168.0.184/sala2/history/addnew">
+					<form method="post" name="form_idcard" id="form_idcard" action="<?php echo base_url()?>history/addnew">
 						<label for="">เลขบัตรประชาชน
 						<div class="input-control text size5">
 							<input type="text" placeholder="เลขบัตรประชาชน" name="idcard" id="idcard" required autofocus/>

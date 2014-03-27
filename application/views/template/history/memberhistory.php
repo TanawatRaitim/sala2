@@ -44,25 +44,40 @@
 					<div class="span10 shadow">
 						<table class="table">
 							<tr class="selected">
-								<th colspan="4">รายละเอียด</th>
+								<th colspan="6">รายละเอียด</th>
 							</tr>
 							<tr>
 								<td class="text-right">ชื่อ : </td>
-								<td><?php echo $member_info[0]['title'].$member_info[0]['fname']." ".$member_info[0]['lname'];?></td>
-								<td class="text-right">รหัสบัตรประชาชน : </td>
+								<td><?php echo $member_info[0]['title'].$member_info[0]['fname']." ".$member_info[0]['lname'];?> (<?php echo $member_info[0]['nickname'];?>)</td>
+								<td class="text-right">บัตรประชาชน : </td>
 								<td><?php echo $member_info[0]['idcard'];?></td>
-							</tr>
-							<tr>
 								<td class="text-right">รหัสสมาชิก : </td>
 								<td><?php echo $member_info[0]['member_code'];?></td>
+							</tr>
+							<tr>
+								<td class="text-right">DOB</td>
+								<td><?php echo mysql2thaidate($member_info[0]['dob']);?></td>
+								<td class="text-right">อายุ</td>
+								<td><?php echo get_age($member_info[0]['dob']);?></td>
 								<td></td>
 								<td></td>
+							</tr>
+							<tr>
+								<td class="text-right">ที่อยู่</td>
+								<td colspan="5">
+									<?php echo $member_info[0]['address'];?> 
+									<?php echo get_prefix($member_info[0]['sub_district'],$member_info[0]['province_id'],1);?> 
+									<?php echo get_prefix($member_info[0]['district'],$member_info[0]['province_id'],2);?> 
+									<?php echo get_province($member_info[0]['province_id']);?> 
+									<?php echo $member_info[0]['postcode'];?>
+								</td>
 							</tr>
 						</table>	
 					</div>
 				</div>
 			</div><!-- div.grid -->
-					
+					<?php echo $total_history;?>
+					<br />
 					<table class="table bordered striped" id="history_data">
 						<thead>
 							<tr>
@@ -88,7 +103,7 @@
 						<td class="text-center"><?php echo $history['book'];?></td>
 						<td class="text-center"><?php echo $history['issue'];?></td>
 						<td class="text-center"><?php echo $history['volume'];?></td>
-						<td class="text-center"><?php echo $history['info'];?></td>
+						<td><?php echo $history['info'];?></td>
 						<td class="text-center"><?php echo mysql2thaidate($history['history_date']);?></td>
 						<td>
 							<div class="button-dropdown">

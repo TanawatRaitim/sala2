@@ -34,7 +34,7 @@
 		public function get_all_member_history($member_id)
 		{
 			
-			$sql = "SELECT members.id as member_id, history.id as history_id, members.idcard, members.member_code, CONCAT(members.title,' ',members.fname,' ',members.lname) as member_name,
+			$sql = "SELECT members.id as member_id, history.id as history_id, members.idcard, members.member_code, CONCAT(members.title,members.fname,' ',members.lname) as member_name,
 					(YEAR(CURDATE())-YEAR(members.dob)) as age, provinces.name as province, 
 					books.name as book, issues.name as issue, history.volume, history.info, history.image, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
 					DATE_FORMAT(history.create_date,'%Y-%m-%d') as history_date   
@@ -92,10 +92,54 @@
 			return $this->db->get('history');
 		}
 		
+		public function get_members_by_issue($book, $issue, $volume)
+		{
+			//echo 'we are in model';
+			$this->db->select('*, contacts.address as contact_address, contacts.sub_district as contact_subdistrict, contacts.district as contact_district, contacts.province_id as contact_province, contacts.postcode as contact_postcode, provinces.name as province_name');
+			$this->db->from('history');
+			$this->db->join('members','history.member_id = members.id');
+			$this->db->join('contacts','history.contact_id = contacts.id');
+			$this->db->join('personalize','history.personalize_id = personalize.id');
+			$this->db->join('provinces','contacts.province_id = provinces.code');
+			$where = array('book_id'=>$book,
+							'issue_id'=>$issue,
+							'volume'=>$volume
+							);
+			
+			$this->db->where($where);
+			$this->db->order_by('history.id','desc');
+			$query = $this->db->get();
+			return $query;
+		}
+		
+		/**
+		 * @return question array()
+		 * 
+		 */
+		public function get_all_question()
+		{
+			$this->db->select('label_code, label');
+			$result = $this->db->get('questions');
+			
+			$question = array();
+			
+			foreach ($result->result_array() as $rows) {
+				$question[$rows['label_code']] = $rows['label'];
+			}
+			
+			return $question;
+			
+			/**
+			echo '<pre>';
+			print_r($question);
+			echo '</pre>';
+			*/
+		}
+		
 		public function get_all_history($perpage, $offset)
 		{
 			
-			$sql = "SELECT members.id as member_id, history.id as history_id, members.idcard, members.member_code, CONCAT(members.title,' ',members.fname,' ',members.lname) as member_name,
+			$sql = "SELECT members.id as member_id, members.dob,  history.id as history_id, members.idcard, members.member_code, CONCAT(members.title,members.fname,' ',members.lname) as member_name,
 					(YEAR(CURDATE())-YEAR(members.dob)) as age, provinces.name as province, 
 					books.name as book, issues.name as issue, history.volume, history.image, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
 					DATE_FORMAT(history.create_date,'%Y-%m-%d') as history_date   
@@ -128,7 +172,7 @@
 		public function main_search($keyword, $perpage, $offset)
 		{
 			$keyword = urldecode($keyword);
-			$sql = "SELECT members.id as member_id, history.id as history_id, members.idcard, members.member_code, CONCAT(members.title,' ',members.fname,' ',members.lname) as member_name,
+			$sql = "SELECT members.id as member_id, history.id as history_id, members.idcard, members.member_code, CONCAT(members.title,members.fname,' ',members.lname) as member_name, members.dob,
 					(YEAR(CURDATE())-YEAR(members.dob)) as age, provinces.name as province, 
 					books.name as book, issues.name as issue, history.volume, history.image, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
 					DATE_FORMAT(history.create_date,'%Y-%m-%d') as history_date   
@@ -138,7 +182,7 @@
 					LEFT JOIN provinces ON(provinces.code = members.province_id)
 					LEFT JOIN books ON(books.id = history.book_id)
 					LEFT JOIN issues ON(issues.id = history.issue_id)
-					WHERE CONCAT(members.title,' ',members.fname,' ',members.lname) like '%$keyword%' or members.idcard like '%$keyword%' or members.member_code like '%$keyword%' or books.name like '%$keyword%'
+					WHERE CONCAT(members.title,members.fname,' ',members.lname) like '%$keyword%' or members.idcard like '%$keyword%' or members.member_code like '%$keyword%' or books.name like '%$keyword%'
 					or issues.name like '%$keyword%' or history.volume like '%$keyword%'
 					ORDER BY history.id DESC
 					";
@@ -676,13 +720,15 @@
 				$this->image_lib->resize();
 				
 				//resize image
+				
+				
 				$config['image_library'] = 'gd2';
 				$config['source_image'] = $dir."/".$file_data['upload_data']['file_name'];
 				$config['new_image'] = $dir;
 				$config['create_thumb'] = FALSE;
 				$config['maintain_ratio'] = TRUE;
-				$config['width'] = 1024;
-				$config['height'] = 683;
+				$config['width'] = 219;
+				$config['height'] = 230;
 				$this->image_lib->initialize($config); 
 				$this->image_lib->resize();
 				
@@ -730,8 +776,6 @@
 			}
 			
 		}
-
-
 
 		/**
 		 * 

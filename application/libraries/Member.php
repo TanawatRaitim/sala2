@@ -7,6 +7,7 @@ class Member {
 	private $member_code;
 	private $member_info;
 	private $member_blank;
+	private $count_member_history;
 	private $id_card;
 	private $history_id;
 	private $history_info;
@@ -123,7 +124,19 @@ class Member {
 	public function get_all_member_history()
 	{
 		$all_history = $this->ci->member_model->get_all_member_history($this->member_id);
+		//member history rows
+		$this->count_member_history = $all_history->num_rows();
 		return $all_history->result_array();
+	}
+	
+	//public function get_member_by_issue($book, $issue, $volume)
+	//{
+		//return get_member_by_issue()
+	//}
+	
+	public function get_count_history()
+	{
+		return $this->count_member_history;
 	}
 	
 	public function get_last_history_info()

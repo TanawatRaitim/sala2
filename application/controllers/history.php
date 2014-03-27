@@ -124,9 +124,9 @@ class History extends CI_Controller {
 		$this->data['personalize_info'] = $this->member->get_personalize_info();
 		$this->data['contact_info'] = $this->member->get_contact_info();
 		
-		
 		//get all member history
 		$this->data['member_history'] = $this->member->get_all_member_history();
+		$this->data['total_history'] = "พบประวัติทั้งหมด ".$this->member->get_count_history()." รายการ";
 		
 		$this->load->view('template/history/memberhistory',$this->data);
 
@@ -187,7 +187,30 @@ class History extends CI_Controller {
 		
 	}
 	
-
+	public function export()
+	{
+		
+		$this->load->model('member_model');
+		$this->data['title'] = 'export';
+		
+		
+		$book = $this->input->post('book_export');
+		$issue = $this->input->post('issue_export');
+		$volume = $this->input->post('volume_export');
+		
+		//get all member filter by book, issue, volume
+		$this->data['result'] = $this->member_model->get_members_by_issue($book, $issue, $volume);
+		
+		//array of question
+		$this->data['question'] = $this->member_model->get_all_question(); 
+		
+		//file name
+		//export
+		$this->data['filename'] = 'export_data';
+		
+		$this->load->view('template/history/export_word',$this->data);
+		
+	}
 
 	public function test()
 	{

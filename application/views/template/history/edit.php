@@ -19,6 +19,34 @@
     <title><?php echo $title; ?></title>
     <script>
 		$(function(){
+			
+			$("#cancel").click(function(e){
+				e.preventDefault();
+				//alert('cancel');
+				//return true;
+				
+				alertify.set({buttonReverse: true});
+				alertify.set({ labels: {
+				    ok     : "ตกลง",
+				    cancel : "ยกเลิก"
+				} });
+				alertify.confirm("คุณต้องการยกเลิกการแก้ไขข้อมูล แล้วกลับไปสู่หน้าหลัก", function (e) {
+				    if (e) {
+				        // user clicked "ok"
+				        //return true;
+				        var url;
+				        url = $("#cancel").attr('href');
+				        window.location = url;
+				        //alertify.error("Error notification" + url);
+				        //return false;
+
+				    } else {
+				    	//alertify.error("Error notification");
+				        return false;
+				    }
+				});
+			});//end cancel
+			
 			$('input, select').keydown( function (event) { //event==Keyevent
 			    if(event.which == 13) {
 			        var inputs = $(this).closest('form').find(':input:visible');
@@ -213,6 +241,10 @@
 	
 	<div class="container" style="margin-top: 70px;"><!-- div.container -->
 		<h2><i class="icon-user fg-magenta"></i> แก้ไขข้อมูล </h2>
+		<p>
+			แก้ไขข้อมูลของ <span class="label info">คุณ <?php echo $member_info[0]['fname'];?> <?php echo $member_info[0]['lname'];?></span>
+			เมื่อวันที่ <?php echo mysql2thaidate(date("Y-m-d",strtotime($history_info[0]['create_date'])));?>
+		</p>
 		<form action="<?php echo site_url('history/update');?>" method="post" enctype="multipart/form-data" name="form_edit_member" id="form_edit_member">
 			<input type="hidden" name="member_idcard" id="member_idcard" value="<?php echo $member_info[0]['idcard'];?>" />
 			<input type="hidden" name="member_code" id="member_code" value="<?php echo $member_info[0]['member_code'];?>" />
@@ -232,24 +264,35 @@
 					</div>
 					<div class="span6">
 						
-						<a href="#" class="button" id="all_history">ดูประวัติทั้งหมด</a>
+						<a href="<?php echo base_url()?>history/memberhistory/<?php echo $history_info[0]['id'];?>" class="button" id="all_history">ดูประวัติทั้งหมด</a>
 						<table class="table">
 							<tr>
 								<th colspan="2">รายละเอียด</th>
 							</tr>
 							<tr>
-								<td>รหัสบัตรประชาชน : </td>
+								<td class="text-right"><strong>ชื่อ</strong></td>
+								<td><?php echo $member_info[0]['title'].$member_info[0]['fname']." ".$member_info[0]['lname'];?> (<?php echo $member_info[0]['nickname'];?>)</td>
+							</tr>
+							
+							<tr>
+								<td class="text-right"><strong>รหัสบัตรประชาชน : </strong></td>
 								<td><?php echo $member_info[0]['idcard'];?></td>
 							</tr>
 							<tr>
-								<td>รหัสสมาชิก : </td>
+								<td class="text-right"><strong>รหัสสมาชิก : </strong></td>
 								<td><?php echo $member_info[0]['member_code'];?></td>
 							</tr>
 							<tr>
-								<td>ข้อมูลเมื่อวันที่ : </td>
-								<td><?php echo mysql2thaidate(date("Y-m-d",strtotime($history_info[0]['create_date'])));?></td>
+								<td colspan="2">
+									<?php echo $member_info[0]['address'];?> 
+									<?php echo get_prefix($member_info[0]['sub_district'],$member_info[0]['province_id'],1);?> 
+									<?php echo get_prefix($member_info[0]['district'],$member_info[0]['province_id'],2);?> 
+									<?php echo get_province($member_info[0]['province_id']);?> 
+									<?php echo $member_info[0]['postcode'];?>
+								</td>
 							</tr>
-						</table>	
+							
+						</table>
 					</div>
 					<div class="span4 shadow">
 						<table class="table">
@@ -489,8 +532,8 @@
 			
 			<div class="grid">
 				<div class="row">
-					<div class="span12">
-						<table class="table shadow">
+					<div class="span12 shadow">
+						<table class="table">
 							<thead>
 								<tr>
 									<th colspan="6">ประวัติส่วนตัว</th>
@@ -630,11 +673,18 @@
 							<span></span>
 						</div>
 						<input type="submit" value="แก้ไขข้อมูล" class="button bg-cobalt fg-white large shadow" />
-						<a href="<?php echo base_url();?>main/index/<?php echo $this->session->userdata('page_main');?>" id="cancel" name="cancel" class="button bg-red fg-white large shadow"">ยกเลิก</a>
+						<a href="<?php echo base_url().$this->session->userdata('previous_url');?>" id="cancel" name="cancel" class="button bg-red fg-white large shadow"">ยกเลิก</a>
 					</div>
 				</div>
 			</div>
 		</form>
+		
+		<pre>
+			<?php 
+			//print_r($this->session->userdata);
+			 ?>
+		</pre>
+		
 	</div> <!-- end div.container -->
 
 </body>

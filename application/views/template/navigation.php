@@ -72,10 +72,15 @@
 				<span class="element-divider"></span>
 
 				<div class="element input-element">
-					<form>
-						<div class="input-control text">
-							<input type="text" placeholder="Search...">
-							<button class="btn-search"></button>
+					<form name="nav_search" id="nav_search" method="post" action="<?php echo base_url();?>main/search">
+						<div class="input-control text size4">
+						<?php if (isset($keyword)): ?>
+							<input type="text" placeholder="search..." name="keyword" id="keyword" value="<?php echo urldecode($keyword);?>" />	
+						<?php else:?>	
+							<input type="text" placeholder="search..." name="keyword" id="keyword" autofocus />
+						<?php endif; ?>
+							
+						    <button name="btn_search_nav" id="btn_search_nav" class="btn-search"></button>
 						</div>
 					</form>
 				</div>

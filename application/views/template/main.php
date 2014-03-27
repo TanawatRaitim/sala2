@@ -15,15 +15,22 @@
     <script src="<?php echo $this->config->item('base_assets'); ?><?php echo $this->config->item('alertify_js'); ?>"></script>
     <title><?php echo $title; ?></title>
     <script>
-		// javascript here 
 		$(function(){
-
+			
+			$("#btn_clear").click(function(){
+				// alert('clear filter');
+				window.location = "<?php echo base_url();?>";
+				//
+			});
+			
 <?php 
 	if($this->session->flashdata('message') && $this->session->flashdata('message')!="")
 	{
+		echo "alertify.log('".$this->session->flashdata('message')."');";
+		$this->session->set_flashdata('message','');
+		
 ?>		
-		//echo "alertify.log('".$this->session->flashdata('message')."');";
-		// $this->session->set_flashdata('message','');
+		/*
 		$.Dialog({
 						shadow: true,
 						overlay: true,
@@ -32,12 +39,16 @@
 						title: 'ข้อความจากระบบ',
 						width: 500,
 						padding: 10,
-						content: "<?php echo $this->session->flashdata('message');?>"
+						content: "<?php //echo $this->session->flashdata('message');?>"
 						});
+						
+		*/				
 <?php		
-	}
-
+	}//end if
 ?>
+
+			
+
 		}); //end ready
 		
 	</script>
@@ -53,6 +64,8 @@
 	<?php $this->load->view('template/navigation');?>	
 	<div class="container" style="margin-top: 70px;"><!-- div.container -->
 		<h1>Histories</h1>
+		
+		<!--
 		<div class="grid">	
 			<div class="row">
 				<div class="span12">
@@ -60,37 +73,42 @@
 				</div>
 			</div>	
 		</div>
+		-->
 		
-		<?php if($histories->num_rows()>0):?>
+		
 			<?php echo $pagination;?>
+			<?php echo $rows_text;?>
 			
 			<table class="table bordered hovered striped" id="history_data">
 				<thead>
 					<tr>
 						<form name="search" id="search" method="post" action="<?php echo base_url();?>main/search">
-							<td colspan="3" class="bg-steel">
-								<div class="input-control text size3">
-								    <input type="text" placeholder="ค้นหาข้อมูล" name="keyword" id="keyword" autofocus />
+							<td colspan="5" class="bg-steel">
+								<div class="input-control text size4">
+								    <input type="text" placeholder="ค้นหาข้อมูล" name="keyword" id="keyword" value="<?php echo urldecode($keyword);?>" autofocus />
 								    <button name="btn_search" id="btn_search" class="btn-search"></button>
+								    <button class="btn-clear" name="btn_clear" id="btn_clear" style="margin-right: 20px;"></button>
 								</div>
 							</td>
-						</form>	
-						<td colspan="10" class="bg-mauve">
-							<div class="input-control select size2">
-								<select>
-									<option>หนังสือ</option>
-								</select>
-							</div>
-							<div class="input-control select size2">
-								<select>
-									<option>คอลัมน์</option>
-								</select>
-							</div>
-							<div class="input-control text size1">
-								<input type="text" placeholder="เล่มที่" />
-							</div>
-							<input type="button" class="button bg-darkGreen fg-white" value="Export" />
-						</td>
+						</form>
+						<form name="export" id="export" method="post" action="<?php echo base_url();?>history/export">	
+							<td colspan="8" class="bg-mauve">
+								<div class="input-control select size2">
+									<select name="book_export" id="book_export">
+										<?php echo books_dropdown();?>
+									</select>
+								</div>
+								<div class="input-control select size2">
+									<select id="issue_export" name="issue_export">
+										<?php echo issues_dropdown();?>
+									</select>
+								</div>
+								<div class="input-control text size1">
+									<input type="text" name="volume_export" id="volume_export" placeholder="เล่มที่" />
+								</div>
+								<input type="submit" id="btn_export" name="btn_export" class="button bg-darkGreen fg-white" value="ดึงข้อมูล" />
+							</td>
+						</form>
 					</tr>
 					<tr>
 						<th></th>
@@ -101,7 +119,7 @@
 						<th>รสนิยม</th>
 						<th>อายุ</th>
 						<th>จังหวัด</th>
-						<th>หนังสือ</th>
+						<!-- <th>หนังสือ</th> -->
 						<th>คอลัมน์</th>
 						<th>เล่มที่</th>
 						<th>วันที่บันทึก</th>
@@ -109,8 +127,13 @@
 					</tr>
 					
 				</thead>
+				
+				
+				
 				<tbody>
-		<?php foreach ($histories->result_array() as $history): ?>
+					
+				<?php if($histories->num_rows()>0):?>	
+				<?php foreach ($histories->result_array() as $history): ?>
 					<tr style="text-align:justify; ">
 						<td>
 							<?php if ($history['image']): ?>
@@ -124,12 +147,12 @@
 						<td><?php echo $history['member_name'];?></td>
 						<td class="text-center"><?php echo $history['sexual_descr'];?></td>
 						<td class="text-center"><img class="rounded" src="<?php echo $this->config->item('base_assets_images');?><?php echo $history['sexual_img'];?>" alt="<?php echo $history['sexual'];?>" /></td>						
-						<td class="text-center"><?php echo $history['age'];?></td>
+						<td class="text-center"><?php echo get_age($history['dob']);?></td>
 						<td class="text-center"><?php echo $history['province'];?></td>
-						<td class="text-center"><?php echo $history['book'];?></td>
+						<!-- <td class="text-center" style="width: 100px;"><?php echo $history['book'];?></td> -->
 						<td class="text-center"><?php echo $history['issue'];?></td>
 						<td class="text-center"><?php echo $history['volume'];?></td>
-						<td class="text-center"><?php echo mysql2thaidate($history['history_date']);?></td>
+						<td class="text-center" style="width: 100px;"><?php echo mysql2thaidate($history['history_date']);?></td>
 						<td>
 							<div class="button-dropdown">
 								<button class="dropdown-toggle bg-darkCobalt fg-white">Actions</button>
@@ -141,21 +164,27 @@
 							</div>
 						</td>
 					</tr>
-		<?php endforeach ?>			
+				<?php endforeach ?>	
+				
+				<?php else:?>	
+					
+					<tr style="text-align: justify">
+						<td colspan="13" class="text-center"><h2>ไม่พบข้อมูล</h2></td>
+					</tr>	
+					
+				<?php endif;?>			
 				</tbody>
 				<tfoot>
 					<tr>
 						<td colspan="13">
 							<?php echo $pagination;?>
+							<?php echo $rows_text;?>
 						</td>
 					</tr>
 				</tfoot>
 			</table>
-					
-		<?php else:?>	
-				
-				
-		<?php endif;?>	
+						
+			
 	</div> <!-- end div.container -->
 </body>
 </html>

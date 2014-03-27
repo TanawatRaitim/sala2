@@ -71,7 +71,7 @@ if ( ! function_exists('mysql2thaidate'))
 
 /**
  * 
- * chang thai date format to mysql date format
+ * change thai date format to mysql date format
  * @param string
  * @return mysql date
  * 
@@ -97,6 +97,31 @@ if ( ! function_exists('thaidate2mysql'))
 				return "";
 			}
 
+		}
+}//end if
+
+
+
+/**
+ * 
+ * get age
+ * @param mysql date
+ * @return age
+ * 
+ */
+
+if ( ! function_exists('get_age'))
+{
+		
+		function get_age($dob="")
+		{
+			if($dob != '0000-00-00')
+			{
+			$then = strtotime($dob);  
+			return(floor((time()-$then)/31556926));
+			}else{
+				return "N/A";
+			}
 		}
 }//end if
 

@@ -31,6 +31,7 @@ class Main extends CI_Controller {
 		$this->load->model('member_model');
 		
 		/********************************        config pagination     **********************/		
+		
 		$config['base_url'] = base_url()."/main/index/";
 		$config['per_page'] = 25;																//how many record per page
 		$config['num_links'] = 6;																//how many link to show
@@ -52,14 +53,21 @@ class Main extends CI_Controller {
 		$config['total_rows'] = $this->db->count_all('history');							//แถวทั้งหมด
 		$this->pagination->initialize($config);												//create
 		$this->data['pagination'] = $this->pagination->create_links();
+		$this->data['total_rows'] = $config['total_rows'];
+		
 /**********************************end config pagination*******************************************************************/	
 		
 		$this->data['title'] = 'หน้าหลัก';
+		$this->data['keyword'] = '';
+		$this->data['rows_text'] = 'พบรายการทั้งหมด '.$config['total_rows'].' รายการ';
 		$this->session->set_userdata('previous_url',uri_string());
 		
+		/*
 		echo '<pre>';
 		print_r($this->session->userdata);
 		echo '</pre>';
+		*/
+		
 		$this->load->view('template/main',$this->data);
 	}
 
@@ -105,11 +113,15 @@ class Main extends CI_Controller {
 		$config['total_rows'] = $this->member_model->get_search_rows();
 		$this->pagination->initialize($config);												//create
 		$this->data['pagination'] = $this->pagination->create_links();
-		
 		$this->session->set_userdata('previous_url',uri_string());
+		$this->data['total_rows'] = $config['total_rows'];
+		$this->data['rows_text'] = 'พบรายการทั้งหมด '.$config['total_rows']." รายการ สำหรับการค้นหา '".urldecode($keyword)."'" ;
+		
+		/*
 		echo '<pre>';
 		print_r($this->session->userdata);
 		echo '</pre>';
+		*/
 		
 /**********************************end config pagination*******************************************************************/		
 		$this->load->view('template/main',$this->data);
