@@ -48,6 +48,7 @@ $config['css'] = 'css/style.css';
 $config['alertify_base'] = 'js/alertify/themes/alertify.core.css';
 $config['alertify_default'] = 'js/alertify/themes/alertify.default.css';
 $config['alertify_js'] = 'js/alertify/lib/alertify.min.js';
+$config['highlight_js'] = 'js/highlight.min.js';
 
 
 
