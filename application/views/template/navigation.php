@@ -5,9 +5,6 @@
 			<span class="element-divider"></span>
 			<a class="pull-menu" href="#"></a>
 			
-			
-			<?php if($this->session->userdata['identity']=='administrator'):?>
-			
 			<ul class="element-menu">
 				<?php if($this->session->userdata('is_admin')):?>
 				<!-- admin menu	 -->

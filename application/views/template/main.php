@@ -15,21 +15,6 @@
     <script src="<?php echo $this->config->item('base_assets'); ?><?php echo $this->config->item('alertify_js'); ?>"></script>
     <title><?php echo $title; ?></title>
     <script>
-<<<<<<< HEAD
-		$(function() {
-			//something
-			var element = document.getElementById('test');
-		}); 
-</script>
-</head>
-<body class="metro">
-	<?php $this->load->view('template/navigation');?>	
-	<div class="container" style="margin-top: 50px;"><!-- div.container -->
-		
-		<!-- <pre><?php print_r($this->session->userdata['identity']);?></pre> -->
-		<pre><?php print_r($this->session->userdata);?></pre>
-		
-=======
 		$(function(){
 			
 			$("#btn_clear").click(function(){
@@ -200,7 +185,7 @@
 			</table>
 						
 			
->>>>>>> origin/Development
+
 	</div> <!-- end div.container -->
 </body>
 </html>
