@@ -95,7 +95,17 @@
 		public function get_members_by_issue($book, $issue, $volume)
 		{
 			//echo 'we are in model';
-			$this->db->select('*, contacts.address as contact_address, contacts.sub_district as contact_subdistrict, contacts.district as contact_district, contacts.province_id as contact_province, contacts.postcode as contact_postcode, provinces.name as province_name');
+			$this->db->select('*, contacts.address as contact_address, 
+								contacts.sub_district as contact_subdistrict, 
+								contacts.district as contact_district, 
+								contacts.province_id as contact_province,
+								contacts.postcode as contact_postcode, 
+								provinces.name as province_name,
+								contacts.phone as contact_phone,
+								contacts.mobile as contact_mobile,
+								contacts.email as contact_email
+								'
+								);
 			$this->db->from('history');
 			$this->db->join('members','history.member_id = members.id');
 			$this->db->join('contacts','history.contact_id = contacts.id');
