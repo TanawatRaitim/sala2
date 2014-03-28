@@ -113,15 +113,21 @@ class Main extends CI_Controller {
 		$config['total_rows'] = $this->member_model->get_search_rows();
 		$this->pagination->initialize($config);												//create
 		$this->data['pagination'] = $this->pagination->create_links();
-		$this->session->set_userdata('previous_url',uri_string());
+		
+		$previous_url = uri_string();
+		$explode = explode('/',$previous_url);
+		
+		//no keyword in uri
+		if(count($explode) == 2)
+		{
+			$previous_url = $previous_url."/".$keyword;
+		}
+		
+		$this->session->set_userdata('previous_url',$previous_url);
+		
 		$this->data['total_rows'] = $config['total_rows'];
 		$this->data['rows_text'] = 'พบรายการทั้งหมด '.$config['total_rows']." รายการ สำหรับการค้นหา '".urldecode($keyword)."'" ;
 		
-		/*
-		echo '<pre>';
-		print_r($this->session->userdata);
-		echo '</pre>';
-		*/
 		
 /**********************************end config pagination*******************************************************************/		
 		$this->load->view('template/main',$this->data);
