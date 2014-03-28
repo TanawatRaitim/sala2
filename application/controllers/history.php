@@ -108,6 +108,11 @@ class History extends CI_Controller {
 		
 	}
 	
+	public function delete($history_id)
+	{
+		echo $history_id;
+	}
+	
 	public function memberhistory($history_id)
 	{
 		//echo $history_id;

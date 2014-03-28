@@ -69,17 +69,18 @@
 
 			<div class="no-tablet-portrait">
 				<span class="element-divider"></span>
+				<!--
 				<a class="element brand" href="#"><span class="icon-spin"></span></a>
 				<a class="element brand" href="#"><span class="icon-printer"></span></a>
 				<span class="element-divider"></span>
-
+				-->
 				<div class="element input-element">
 					<form name="nav_search" id="nav_search" method="post" action="<?php echo base_url();?>main/search">
 						<div class="input-control text size4">
 						<?php if (isset($keyword)): ?>
 							<input type="text" placeholder="search..." name="keyword" id="keyword" value="<?php echo urldecode($keyword);?>" />	
 						<?php else:?>	
-							<input type="text" placeholder="search..." name="keyword" id="keyword" autofocus />
+							<input type="text" placeholder="search..." name="keyword" id="keyword" />
 						<?php endif; ?>
 							
 						    <button name="btn_search_nav" id="btn_search_nav" class="btn-search"></button>

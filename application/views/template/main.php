@@ -13,9 +13,18 @@
     <script src="<?php echo $this->config->item('base_assets'); ?><?php echo $this->config->item('jquery_ui_widget'); ?>"></script>
     <script src="<?php echo $this->config->item('base_assets'); ?><?php echo $this->config->item('metro_js'); ?>"></script>
     <script src="<?php echo $this->config->item('base_assets'); ?><?php echo $this->config->item('alertify_js'); ?>"></script>
+    <script src="<?php echo $this->config->item('base_assets'); ?><?php echo $this->config->item('highlight_js'); ?>"></script>
     <title><?php echo $title; ?></title>
     <script>
 		$(function(){
+			
+			var keyword = $("#keyword").val();
+			
+			if(keyword!="")
+			{
+				//console.log('have value to search');
+				$("#history_data").highlight(keyword);
+			}
 			
 			$("#btn_clear").click(function(){
 				// alert('clear filter');
@@ -56,6 +65,8 @@
 		.text-underline{
 			text-decoration: underline;
 		}
+		
+		
 		
 		
 	</style>
@@ -160,6 +171,9 @@
 									<li><a href="<?php echo base_url();?>history/memberhistory/<?php echo $history['history_id'];?>">ดูประวัติ</a></li>
 									<li><a href="<?php echo base_url();?>history/edit/<?php echo $history['history_id'];?>">แก้ไข</a></li>
 									<li><a href="<?php echo base_url();?>history/addtemp/<?php echo $history['history_id'];?>">เพิ่ม</a></li>
+									<?php if($this->session->userdata('is_admin')):?>
+									<li><a href="<?php echo base_url();?>history/delete/<?php echo $history['history_id'];?>">ลบ</a></li>	
+									<?php endif;?>	
 								</ul>
 							</div>
 						</td>
