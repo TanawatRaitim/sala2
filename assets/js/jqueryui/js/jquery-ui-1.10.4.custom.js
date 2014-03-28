@@ -8232,7 +8232,13 @@ $.extend(Datepicker.prototype, {
 		}
 		inst.selectedDay = date.getDate();
 		inst.drawMonth = inst.selectedMonth = date.getMonth();
-		inst.drawYear = inst.selectedYear = date.getFullYear();
+		
+		/*Customs By www.javascriptthai.com*/
+         //inst.drawYear = inst.selectedYear = date.getFullYear();
+         if (inst.input.val() != "")
+         inst.drawYear = inst.selectedYear = (date.getFullYear() - this._get(inst, 'yearOffSet')) ;
+		
+		// inst.drawYear = inst.selectedYear = date.getFullYear();
 		inst.currentDay = (dates ? date.getDate() : 0);
 		inst.currentMonth = (dates ? date.getMonth() : 0);
 		inst.currentYear = (dates ? date.getFullYear() : 0);
@@ -8619,7 +8625,7 @@ $.extend(Datepicker.prototype, {
 				for (; year <= endYear; year++) {
 					inst.yearshtml += "<option value='" + year + "'" +
 						(year === drawYear ? " selected='selected'" : "") +
-						">" + year + "</option>";
+						'>' + (year + this._get(inst, 'yearOffSet')) + '</option>'; /* Custom By www.javascriptthai.com */
 				}
 				inst.yearshtml += "</select>";
 
@@ -8748,6 +8754,10 @@ $.extend(Datepicker.prototype, {
 		var date = (day ? (typeof day === "object" ? day :
 			this._daylightSavingAdjust(new Date(year, month, day))) :
 			this._daylightSavingAdjust(new Date(inst.currentYear, inst.currentMonth, inst.currentDay)));
+			
+			/* Custom By www.javascriptthai.com */
+           date.setFullYear(date.getFullYear() + this._get(inst, 'yearOffSet'));
+			
 		return this.formatDate(this._get(inst, "dateFormat"), date, this._getFormatConfig(inst));
 	}
 });

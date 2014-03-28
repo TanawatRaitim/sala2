@@ -81,15 +81,16 @@ $config['max_rounds']     = 9;
  | The controller should check this function and act
  | appropriately. If this variable set to 0, there is no maximum.
  */
-$config['site_title']                 = "Example.com";       // Site Title, example.com
+$config['site_title']                 = "ทะเบียนสมาชิก";       // Site Title, example.com
 //$config['admin_email']                = "admin@example.com"; // Admin Email, admin@example.com
 $config['admin_email']                = "tanardroid@gmail.com"; // Admin Email, admin@example.com
 $config['default_group']              = 'Users';           // Default group, use name
 $config['admin_group']                = 'Admin';             // Default administrators group, use name
 //$config['identity']                   = 'email';             // A database column which is used to login with
-$config['identity']                   = 'username';             // A database column which is used to login with
-$config['min_password_length']        = 5;                   // Minimum Required Length of Password
-$config['max_password_length']        = 10;                  // Maximum Allowed Length of Password
+
+$config['identity']                   = 'email';             // A database column which is used to login with
+$config['min_password_length']        = 4;                   // Minimum Required Length of Password
+$config['max_password_length']        = 20;                  // Maximum Allowed Length of Password
 $config['email_activation']           = FALSE;               // Email Activation for registration
 $config['manual_activation']          = FALSE;               // Manual Activation for registration
 $config['remember_users']             = TRUE;                // Allow users to be remembered and enable auto-login

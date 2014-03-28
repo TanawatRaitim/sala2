@@ -20,6 +20,14 @@ $config['base_url']	= 'http://172.168.0.184/sala2/';
  * Base assets URL
  */ 
 $config['base_assets'] = 'http://172.168.0.184/sala2/assets/';
+$config['base_assets_images'] = 'http://172.168.0.184/sala2/assets/images/';
+$config['base_history_image'] = 'http://172.168.0.184/sala2/assets/images/history/';
+$config['base_history_thumbs'] = 'http://172.168.0.184/sala2/assets/images/history/thumbs/';
+
+
+//server path
+$config['upload_history_images'] = './assets/images/history/';
+$config['upload_history_thumbs'] = './assets/images/history/thumbs';
  
 /*
  * config script files
@@ -35,6 +43,16 @@ $config['metro_js'] = 'metro_ui/min/metro.min.js';
 $config['jquery_validation'] = 'js/jquery_validation/dist/jquery.validate.min.js';
 $config['jquery_validation_additional'] = 'js/jquery_validation/dist/additional-methods.min.js';
 $config['css'] = 'css/style.css';
+
+
+$config['alertify_base'] = 'js/alertify/themes/alertify.core.css';
+$config['alertify_default'] = 'js/alertify/themes/alertify.default.css';
+$config['alertify_js'] = 'js/alertify/lib/alertify.min.js';
+
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
