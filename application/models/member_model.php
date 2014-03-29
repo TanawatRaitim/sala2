@@ -23,6 +23,15 @@
 			}
 		}
 		
+		public function get_created_date_member($member_id)
+		{
+			$sql = "SELECT DATE_FORMAT(create_date,'%Y-%m-%d') as history_date FROM members WHERE id = $member_id";
+			$query = $this->db->query($sql);
+			$result = $query->result_array();
+			
+			return $result[0]['history_date'];
+		}
+		
 		public function get_member($idcard)
 		{
 			$this->db->where('idcard',$idcard);

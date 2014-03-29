@@ -205,6 +205,29 @@ class Member {
 
 	}
 	
+	
+	/**
+	 * @return true if passed 3 months
+	 * 
+	 */
+	public function is_3months()
+	{
+		$current_date =  date('Y-m-d');
+		$current_date = strtotime($current_date);
+		$date_created = $this->ci->member_model->get_created_date_member($this->member_id);
+		$date_created = strtotime($date_created);
+		$diff = $current_date-$date_created;
+		$months_diff = floor($diff / 86400 / 30 );
+		
+		if($months_diff>3)
+		{
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+	
 	private function get_idcard_from_history($history_id)
 	{
 		return $this->ci->member_model->get_idcard_from_history($history_id);

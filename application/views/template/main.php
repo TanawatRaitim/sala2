@@ -55,9 +55,6 @@
 <?php		
 	}//end if
 ?>
-
-			
-
 		}); //end ready
 		
 	</script>
@@ -66,15 +63,12 @@
 			text-decoration: underline;
 		}
 		
-		
-		
-		
 	</style>
 </head>
 <body class="metro">
 	<?php $this->load->view('template/navigation');?>	
 	<div class="container" style="margin-top: 70px;"><!-- div.container -->
-		<h1>Histories</h1>
+		<h2>ประวัติการสมัครลงคอลัมน์</h2>
 		
 		<!--
 		<div class="grid">	

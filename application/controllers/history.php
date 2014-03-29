@@ -115,10 +115,6 @@ class History extends CI_Controller {
 	
 	public function memberhistory($history_id)
 	{
-		//echo $history_id;
-		
-		//like edit
-		
 		//and get all member history
 		$this->load->library('member');
 		$this->data['title'] = 'History Edit';
@@ -132,6 +128,20 @@ class History extends CI_Controller {
 		//get all member history
 		$this->data['member_history'] = $this->member->get_all_member_history();
 		$this->data['total_history'] = "พบประวัติทั้งหมด ".$this->member->get_count_history()." รายการ";
+		
+		//get is pass 3 months
+		$is3month = $this->member->is_3months();
+		
+		if($is3month)
+		{
+			$this->data['is_3months'] = "<span class='text-success'>สมาชิกท่านนี้ผ่านช่วง 3 เดือนมาแล้ว</span>";
+		}else{
+			$this->data['is_3months'] = "<span class='text-alert'>สมาชิกท่านนี้ยังอยู่ในช่วง 3 เดือน</span>";
+		}
+		
+		
+		
+		
 		
 		$this->load->view('template/history/memberhistory',$this->data);
 
@@ -219,9 +229,40 @@ class History extends CI_Controller {
 
 	public function test()
 	{
-		echo mysql2thaidate('1981-08-03');
+		
+		$query = $this->db->get('history');
+		$result = $query->result_array();
+		echo '<pre>';
+		//print_r($result);
+		echo '</pre>';
+		//echo $result[0]['create_date'];
+		//echo $result[3000]['create_date'];
+		
+		$current_date =  date('Y-m-d');
+		$current_date = strtotime($current_date);
+		
+		// echo $current_date;
+		
+		$date1 = date(strtotime('2014-01-01'));
+		// $date2 = date(strtotime('2012-12-31'));
+		//echo $date1;
+		
+		$difference = $current_date - $date1;
+		
+		// echo $difference;
+		
+		
+		$months = floor($difference / 86400 / 30 );
+		
+		echo "current date = ".$current_date;
 		echo '<br />';
-		echo thaidate2mysql('03-08-2524');
+		echo "date to diff = ".$date1;
+		echo '<br />';
+		
+		
+		echo "diff=".$months."months";
+		
+				
 	}
 	
 }

@@ -44,7 +44,7 @@
 					<div class="span10 shadow">
 						<table class="table">
 							<tr class="selected">
-								<th colspan="6">รายละเอียด</th>
+								<th colspan="6">รายละเอียด <?php echo $is_3months;?></th>
 							</tr>
 							<tr>
 								<td class="text-right">ชื่อ : </td>
