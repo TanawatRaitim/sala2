@@ -47,6 +47,16 @@ class History extends CI_Controller {
 			$this->data['history_info'] = $this->member->get_last_history_info();
 			$this->data['personalize_info'] = $this->member->get_last_personalize_info();
 			$this->data['contact_info'] = $this->member->get_last_contact_info();
+			
+			$is3month = $this->member->is_3months();
+		
+			if($is3month)
+			{
+				$this->data['is_3months'] = "<span class='text-success'>สมาชิกท่านนี้ผ่านช่วง 3 เดือนมาแล้ว</span>";
+			}else{
+				$this->data['is_3months'] = "<span class='text-alert'>สมาชิกท่านนี้ยังอยู่ในช่วง 3 เดือน</span>";
+			}
+			
 		}
 		
 		$this->load->view('template/history/add',$this->data);	
@@ -66,6 +76,15 @@ class History extends CI_Controller {
 		$this->data['history_info'] = $this->member->get_history_info();
 		$this->data['personalize_info'] = $this->member->get_personalize_info();
 		$this->data['contact_info'] = $this->member->get_contact_info();
+		
+		$is3month = $this->member->is_3months();
+		
+		if($is3month)
+		{
+			$this->data['is_3months'] = "<span class='text-success'>สมาชิกท่านนี้ผ่านช่วง 3 เดือนมาแล้ว</span>";
+		}else{
+			$this->data['is_3months'] = "<span class='text-alert'>สมาชิกท่านนี้ยังอยู่ในช่วง 3 เดือน</span>";
+		}
 		
 		$this->load->view('template/history/add',$this->data);
 		
@@ -104,6 +123,15 @@ class History extends CI_Controller {
 		$this->data['personalize_info'] = $this->member->get_personalize_info();
 		$this->data['contact_info'] = $this->member->get_contact_info();
 		
+		$is3month = $this->member->is_3months();
+		
+		if($is3month)
+		{
+			$this->data['is_3months'] = "<span class='text-success'>สมาชิกท่านนี้ผ่านช่วง 3 เดือนมาแล้ว</span>";
+		}else{
+			$this->data['is_3months'] = "<span class='text-alert'>สมาชิกท่านนี้ยังอยู่ในช่วง 3 เดือน</span>";
+		}
+		
 		$this->load->view('template/history/edit',$this->data);
 		
 	}
@@ -138,10 +166,6 @@ class History extends CI_Controller {
 		}else{
 			$this->data['is_3months'] = "<span class='text-alert'>สมาชิกท่านนี้ยังอยู่ในช่วง 3 เดือน</span>";
 		}
-		
-		
-		
-		
 		
 		$this->load->view('template/history/memberhistory',$this->data);
 

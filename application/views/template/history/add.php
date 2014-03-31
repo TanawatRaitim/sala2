@@ -257,6 +257,7 @@
 		<p>
 			ข้อมูลล่าสุดของ <span class="label info">คุณ <?php echo $member_info[0]['fname'];?> <?php echo $member_info[0]['lname'];?></span>
 			เมื่อวันที่ <?php echo mysql2thaidate(date("Y-m-d",strtotime($history_info[0]['create_date'])));?>
+			<?php echo $is_3months;?>
 		</p>	
 		<form action="<?php echo site_url('history/add');?>" method="post" enctype="multipart/form-data" name="form_old_member" id="form_old_member">
 			<input type="hidden" name="member_idcard" id="member_idcard" value="<?php echo $member_info[0]['idcard'];?>" />

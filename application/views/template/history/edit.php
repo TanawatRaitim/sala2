@@ -244,6 +244,7 @@
 		<p>
 			แก้ไขข้อมูลของ <span class="label info">คุณ <?php echo $member_info[0]['fname'];?> <?php echo $member_info[0]['lname'];?></span>
 			เมื่อวันที่ <?php echo mysql2thaidate(date("Y-m-d",strtotime($history_info[0]['create_date'])));?>
+			<?php echo $is_3months;?>
 		</p>
 		<form action="<?php echo site_url('history/update');?>" method="post" enctype="multipart/form-data" name="form_edit_member" id="form_edit_member">
 			<input type="hidden" name="member_idcard" id="member_idcard" value="<?php echo $member_info[0]['idcard'];?>" />
