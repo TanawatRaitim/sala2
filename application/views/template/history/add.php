@@ -21,8 +21,6 @@
 		$(function(){
 			$("#cancel").click(function(e){
 				e.preventDefault();
-				//alert('cancel');
-				//return true;
 				
 				alertify.set({buttonReverse: true});
 				alertify.set({ labels: {
@@ -67,7 +65,7 @@
 				$("#contact_country").val($("#member_country").val()).effect("highlight","slow");
 			});
 			
-			
+			//date picker
 			$.datepicker.regional['th'] ={
 		        changeMonth: true,
 		        changeYear: true,
@@ -86,6 +84,7 @@
 			$( "#dob" ).datepicker( $.datepicker.regional["th"] );   // บอกให้ใช้ Propertie ภาษาที่เรานิยามไว้
     		$( "#dob" ).datepicker();                                 //Innit DatePicker ไปที่ Control ที่มี ID = datepicker
 			
+			//validation
 			$.validator.addMethod(
 				"title",
 				function(value, element){
@@ -101,10 +100,8 @@
 			jQuery.validator.messages.required = "";
 			jQuery.validator.messages.min = "";
 			
-			
 			$("#form_new_member, #form_old_member").validate({
 				invalidHandler: function(e, validator) {
-					
 					
 					 $.Dialog({
 						shadow: true,
@@ -234,9 +231,6 @@
 				},
 				// debug:true
 			});
-			
-
-			
 		});
 		
 	</script>
@@ -274,12 +268,7 @@
 							<img class="rounded shadow" src="<?php echo $this->config->item('base_assets_images');?>no_img.png">
 						<?php endif ?>
 					</div>
-					
-					
-					
-					
 					<div class="span6">
-						
 						<a href="<?php echo base_url()?>history/memberhistory/<?php echo $history_info[0]['id'];?>" class="button" id="all_history">ดูประวัติทั้งหมด</a>
 						<table class="table">
 							<tr>

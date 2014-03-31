@@ -18,6 +18,7 @@
     <script>
 		$(function(){
 			
+			//highlight plugin
 			var keyword = $("#keyword").val();
 			
 			if(keyword!="")
@@ -26,11 +27,29 @@
 				$("#history_data").highlight(keyword);
 			}
 			
+			
+			//clear filter
 			$("#btn_clear").click(function(){
 				// alert('clear filter');
 				window.location = "<?php echo base_url();?>";
 				//
 			});
+			
+			//validate export
+			//#book_export, #issue_export, #volume_export, #btn_export
+			$("#btn_export").click(function(e){
+				
+				var book = $("#book_export").val();
+				var issue = $("#issue_export").val();
+				var volume = $("#volume_export").val();
+				
+				if(book == 0 || issue == 0 || volume == "")
+				{
+					return false;
+				}
+				
+			});
+			
 			
 <?php 
 	if($this->session->flashdata('message') && $this->session->flashdata('message')!="")

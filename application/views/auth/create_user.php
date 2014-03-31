@@ -29,7 +29,7 @@
 			
 			<div id="infoMessage"><?php echo $message;?></div>
 			
-			<form action="http://172.168.0.184/sala2/auth/create_user" method="post" accept-charset="utf-8">
+			<form action="<?php echo base_url();?>sala2/auth/create_user" method="post" accept-charset="utf-8">
 				<label for="first_name">First Name:</label>
 				<input type="text" name="first_name" value="" id="first_name"  />
 

@@ -7,9 +7,9 @@
 <?php foreach($css_files as $file): ?>
 	<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
 <?php endforeach; ?>
-	<link type="text/css" rel="stylesheet" href="http://172.168.0.184/sala2/assets/metro_ui/css/metro-bootstrap.css" />
-	<link type="text/css" rel="stylesheet" href="http://172.168.0.184/sala2/assets/metro_ui/css/metro-bootstrap-responsive.css" />
-	<link type="text/css" rel="stylesheet" href="http://172.168.0.184/sala2/assets/grocery_crud/css/ui/simple/jquery-ui-1.10.1.custom.min.css" />
+	<link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/metro_ui/css/metro-bootstrap.css" />
+	<link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/metro_ui/css/metro-bootstrap-responsive.css" />
+	<link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/grocery_crud/css/ui/simple/jquery-ui-1.10.1.custom.min.css" />
 <?php foreach($js_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
