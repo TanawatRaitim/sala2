@@ -44,3 +44,10 @@ table#history_data tr td{
 .highlight{
 	background-color: #FFFF88;
 }
+
+.right-top{
+	color: red;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}

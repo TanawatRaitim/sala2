@@ -244,7 +244,7 @@
 		<p>
 			แก้ไขข้อมูลของ <span class="label info">คุณ <?php echo $member_info[0]['fname'];?> <?php echo $member_info[0]['lname'];?></span>
 			เมื่อวันที่ <?php echo mysql2thaidate(date("Y-m-d",strtotime($history_info[0]['create_date'])));?>
-			<?php echo $is_3months;?>
+			&nbsp;<?php echo $is_3months;?>
 		</p>
 		<form action="<?php echo site_url('history/update');?>" method="post" enctype="multipart/form-data" name="form_edit_member" id="form_edit_member">
 			<input type="hidden" name="member_idcard" id="member_idcard" value="<?php echo $member_info[0]['idcard'];?>" />
@@ -272,7 +272,13 @@
 							</tr>
 							<tr>
 								<td class="text-right"><strong>ชื่อ</strong></td>
-								<td><?php echo $member_info[0]['title'].$member_info[0]['fname']." ".$member_info[0]['lname'];?> (<?php echo $member_info[0]['nickname'];?>)</td>
+								<td>
+									<?php echo $member_info[0]['title'].$member_info[0]['fname']." ".$member_info[0]['lname'];?> (<?php echo $member_info[0]['nickname'];?>)
+									<?php if($history_info[0]['attachment']!=""):?>
+										&nbsp;&nbsp;
+										<a href="<?php echo $this->config->item('base_history_attachment').$history_info[0]['attachment'];?>" target="_blank"><i class="icon-attachment fg-lightRed"></i></a>
+									<?php endif;?>
+								</td>
 							</tr>
 							
 							<tr>
@@ -364,6 +370,12 @@
 								<tr class="selected">
 									<td colspan="2" class="table-label">รูปภาพ</td>
 									<td colspan="5" class="table-input"><input type="file" name="history_img" id="history_img" /></td>
+								</tr>
+								<tr class="selected">
+									<td colspan="2" class="table-label">เอกสารแนบ</td>
+									<td colspan="5" class="table-input">
+										<input type="file" name="history_attachment" id="history_attachment" />
+									</td>
 								</tr>
 								<tr class="selected">
 									<td colspan="2" class="text-right">ข้อความที่ต้องการลง</td>

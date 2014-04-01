@@ -48,7 +48,15 @@
 							</tr>
 							<tr>
 								<td class="text-right">ชื่อ : </td>
-								<td><?php echo $member_info[0]['title'].$member_info[0]['fname']." ".$member_info[0]['lname'];?> (<?php echo $member_info[0]['nickname'];?>)</td>
+								<td>
+									<?php echo $member_info[0]['title'].$member_info[0]['fname']." ".$member_info[0]['lname'];?> (<?php echo $member_info[0]['nickname'];?>)
+									&nbsp;&nbsp;
+									<?php if($history_info[0]['attachment']!=""):?>
+										&nbsp;&nbsp;
+										<a href="<?php echo $this->config->item('base_history_attachment').$history_info[0]['attachment'];?>" target="_blank"><i class="icon-attachment fg-lightRed"></i></a>
+									<?php endif;?>
+									
+								</td>
 								<td class="text-right">บัตรประชาชน : </td>
 								<td><?php echo $member_info[0]['idcard'];?></td>
 								<td class="text-right">รหัสสมาชิก : </td>
@@ -99,9 +107,20 @@
 						<?php else: ?>
 							<img class="rounded shadow" width="50px" src="<?php echo $this->config->item('base_assets_images');?>no_img.png">
 						<?php endif ?>
+						
+						
 						</td>
-						<td class="text-center"><?php echo $history['book'];?></td>
-						<td class="text-center"><?php echo $history['issue'];?></td>
+						<td class="text-center">
+							<?php echo $history['book'];?>
+							<?php if($history['attachment']!=""):?>
+								&nbsp;&nbsp;
+								<a href="<?php echo $this->config->item('base_history_attachment').$history['attachment'];?>" target="_blank"><i class="icon-attachment fg-lightRed"></i></a>
+							<?php endif;?>
+						</td>
+						<td class="text-center">
+							<?php echo $history['issue'];?>
+							
+						</td>
 						<td class="text-center"><?php echo $history['volume'];?></td>
 						<td><?php echo $history['info'];?></td>
 						<td class="text-center"><?php echo mysql2thaidate($history['history_date']);?></td>

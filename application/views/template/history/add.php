@@ -372,6 +372,12 @@
 									</td>
 								</tr>
 								<tr class="selected">
+									<td colspan="2" class="table-label">เอกสารแนบ</td>
+									<td colspan="5" class="table-input">
+										<input type="file" name="history_attachment" id="history_attachment" />
+									</td>
+								</tr>
+								<tr class="selected">
 									<td colspan="2" class="text-right">ข้อความที่ต้องการลง</td>
 									<td colspan="5"><input type='text' name="history_info" id="history_info" value="<?php echo $history_info[0]['info'];?>" size="100" required /></td>
 								</tr>
@@ -776,6 +782,12 @@
 								<tr class="selected">
 									<td colspan="2" class="table-label">รูปภาพ</td>
 									<td colspan="5" class="table-input"><input type="file" name="history_img" id="history_img" /></td>
+								</tr>
+								<tr class="selected">
+									<td colspan="2" class="table-label">เอกสารแนบ</td>
+									<td colspan="5" class="table-input">
+										<input type="file" name="history_attachment" id="history_attachment" />
+									</td>
 								</tr>
 								<tr class="selected">
 									<td colspan="2" class="text-right">ข้อความที่ต้องการลง</td>

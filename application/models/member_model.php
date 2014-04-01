@@ -45,7 +45,7 @@
 			
 			$sql = "SELECT members.id as member_id, history.id as history_id, members.idcard, members.member_code, CONCAT(members.title,members.fname,' ',members.lname) as member_name,
 					(YEAR(CURDATE())-YEAR(members.dob)) as age, provinces.name as province, 
-					books.name as book, issues.name as issue, history.volume, history.info, history.image, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
+					books.name as book, issues.name as issue, history.volume, history.info, history.image, history.attachment, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
 					DATE_FORMAT(history.create_date,'%Y-%m-%d') as history_date   
 					FROM history 
 					LEFT JOIN members ON(members.id = history.member_id)
@@ -147,12 +147,6 @@
 			}
 			
 			return $question;
-			
-			/**
-			echo '<pre>';
-			print_r($question);
-			echo '</pre>';
-			*/
 		}
 		
 		public function get_all_history($perpage, $offset)
@@ -160,7 +154,7 @@
 			
 			$sql = "SELECT members.id as member_id, members.dob,  history.id as history_id, members.idcard, members.member_code, CONCAT(members.title,members.fname,' ',members.lname) as member_name,
 					(YEAR(CURDATE())-YEAR(members.dob)) as age, provinces.name as province, 
-					books.name as book, issues.name as issue, history.volume, history.image, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
+					books.name as book, issues.name as issue, history.volume, history.image, history.attachment,  sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
 					DATE_FORMAT(history.create_date,'%Y-%m-%d') as history_date   
 					FROM history 
 					LEFT JOIN members ON(members.id = history.member_id)
@@ -193,7 +187,7 @@
 			$keyword = urldecode($keyword);
 			$sql = "SELECT members.id as member_id, history.id as history_id, members.idcard, members.member_code, CONCAT(members.title,members.fname,' ',members.lname) as member_name, members.dob,
 					(YEAR(CURDATE())-YEAR(members.dob)) as age, provinces.name as province, 
-					books.name as book, issues.name as issue, history.volume, history.image, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
+					books.name as book, issues.name as issue, history.volume, history.image, history.attachment, sexual.name as sexual, sexual.description as sexual_descr, sexual.image as sexual_img,
 					DATE_FORMAT(history.create_date,'%Y-%m-%d') as history_date   
 					FROM history 
 					LEFT JOIN members ON(members.id = history.member_id)
@@ -367,12 +361,28 @@
 				$image_name = $this->input->post('member_id')."_".$history_id;
 				
 				//upload image, resize, thumbnail				
-				$file_name = $this->upload($image_name);
+				$file_name = $this->upload_image($image_name);
 				
 				//update history.image
 				$image_data = array('image'=>$file_name);
 				$this->db->where('id',$history_id);
 				$this->db->update('history',$image_data);
+				
+			}
+			
+			//upload attachment
+			if($_FILES['history_attachment']['name']){
+			
+				//attachment name (memberid_historyid)
+				$attachment_name = $this->input->post('member_id')."_".$history_id;
+				
+				//upload attachment				
+				$file_name = $this->upload_attachment($attachment_name);
+				
+				//update history.attachment
+				$attachment_data = array('attachment'=>$file_name);
+				$this->db->where('id',$history_id);
+				$this->db->update('history',$attachment_data);
 				
 			}
 			
@@ -513,14 +523,13 @@
 			
 			
 			//upload image
-			/*	upload to member ?	*/
 			if($_FILES['history_img']['name']){
 			
 				//image name (memberid_historyid)
 				$image_name = $member_id."_".$history_id;
 				
 				//upload image, resize, thumbnail				
-				$file_name = $this->upload($image_name);
+				$file_name = $this->upload_image($image_name);
 				
 				//update history.image
 				$image_data = array('image'=>$file_name);
@@ -529,9 +538,23 @@
 				
 			}
 			
+			//upload attachment
+			if($_FILES['history_attachment']['name']){
+			
+				//attachment name (memberid_historyid)
+				$attachment_name = $member_id."_".$history_id;
+				
+				//upload attachment				
+				$file_name = $this->upload_attachment($attachment_name);
+				
+				//update history.attachment
+				$attachment_data = array('attachment'=>$file_name);
+				$this->db->where('id',$history_id);
+				$this->db->update('history',$attachment_data);
+				
+			}
+			
 			return $history_id;		
-			
-			
 		}
 
 		public function update_history()
@@ -663,7 +686,7 @@
 				$image_name = $this->input->post('member_id')."_".$this->input->post('history_id');
 				
 				//upload image, resize, thumbnail				
-				$file_name = $this->upload($image_name);
+				$file_name = $this->upload_image($image_name);
 				
 				//update history.image
 				$image_data = array('image'=>$file_name);
@@ -671,6 +694,24 @@
 				$this->db->update('history',$image_data);
 				
 			}
+			
+			//upload attachment
+
+			if($_FILES['history_attachment']['name']){
+			
+				//attachment name (memberid_historyid)
+				$attachment_name = $this->input->post('member_id')."_".$this->input->post('history_id');
+				
+				//upload attachment				
+				$file_name = $this->upload_attachment($attachment_name);
+				
+				//update history.attachment
+				$attachment_data = array('attachment'=>$file_name);
+				$this->db->where('id',$this->input->post('history_id'));
+				$this->db->update('history',$attachment_data);
+				
+			}
+			
 			
 			return $this->input->post('history_id');
 		}
@@ -702,7 +743,7 @@
 		 * @return return file name to uploaded
 		 */
 		
-		public function upload($image_name)
+		public function upload_image($image_name)
 		{	
 			$this->load->library('upload');
 			// $id =  $this->input->post('id');
@@ -739,8 +780,6 @@
 				$this->image_lib->resize();
 				
 				//resize image
-				
-				
 				$config['image_library'] = 'gd2';
 				$config['source_image'] = $dir."/".$file_data['upload_data']['file_name'];
 				$config['new_image'] = $dir;
@@ -750,6 +789,39 @@
 				$config['height'] = 230;
 				$this->image_lib->initialize($config); 
 				$this->image_lib->resize();
+				
+				return $file_data['upload_data']['file_name'];
+				
+			}else{
+				echo "Can not upload please contact admin";
+				exit();
+			}	
+		}
+
+		/**
+		 * upload attachment file
+		 * @param text
+		 * @return return boolean
+		 */
+		
+		public function upload_attachment($attachment_name)
+		{	
+			$this->load->library('upload');
+			
+			//dir files
+			//user path directory not url
+			$dir = $this->config->item('upload_history_attachment');
+
+			if($_FILES['history_attachment']['name']){
+				
+				//upload image
+				$config['upload_path'] = $dir;
+				$config['allowed_types'] = 'jpg|png|jpeg|pdf';
+				$config['file_name'] = $attachment_name;
+				$config['overwrite'] = TRUE;
+				$this->upload->initialize($config);
+				$this->upload->do_upload('history_attachment');
+				$file_data = array('upload_data'=>$this->upload->data());
 				
 				return $file_data['upload_data']['file_name'];
 				

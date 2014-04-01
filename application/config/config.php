@@ -23,13 +23,13 @@ $config['base_assets'] = 'http://172.168.0.184/sala2/assets/';
 $config['base_assets_images'] = 'http://172.168.0.184/sala2/assets/images/';
 $config['base_history_image'] = 'http://172.168.0.184/sala2/assets/images/history/';
 $config['base_history_thumbs'] = 'http://172.168.0.184/sala2/assets/images/history/thumbs/';
-$config['base_history_pdf'] = 'http://172.168.0.184/sala2/assets/uploads/files/';
+$config['base_history_attachment'] = 'http://172.168.0.184/sala2/assets/uploads/files/';
 
 
 //server path
 $config['upload_history_images'] = './assets/images/history/';
 $config['upload_history_thumbs'] = './assets/images/history/thumbs/';
-$config['upload_history_pdf'] = './assets/uploads/files/';
+$config['upload_history_attachment'] = './assets/uploads/files/';
  
 /*
  * config script files

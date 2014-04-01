@@ -103,7 +103,7 @@
 			<?php echo $pagination;?>
 			<?php echo $rows_text;?>
 			
-			<table class="table bordered hovered striped" id="history_data">
+			<table class="table hovered" id="history_data">
 				<thead>
 					<tr>
 						<form name="search" id="search" method="post" action="<?php echo base_url();?>main/search">
@@ -168,7 +168,12 @@
 						</td>
 						<td><?php echo $history['member_code'];?></td>
 						<td><?php echo $history['idcard'];?></td>
-						<td><?php echo $history['member_name'];?></td>
+						<td><?php echo $history['member_name'];?>
+							<?php if($history['attachment']!=""):?>
+								&nbsp;&nbsp;
+								<a href="<?php echo $this->config->item('base_history_attachment').$history['attachment'];?>" target="_blank"><i class="icon-attachment fg-lightRed"></i></a>
+							<?php endif;?>	
+						</td>
 						<td class="text-center"><?php echo $history['sexual_descr'];?></td>
 						<td class="text-center"><img class="rounded" src="<?php echo $this->config->item('base_assets_images');?><?php echo $history['sexual_img'];?>" alt="<?php echo $history['sexual'];?>" /></td>						
 						<td class="text-center"><?php echo get_age($history['dob']);?></td>
