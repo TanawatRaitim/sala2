@@ -86,7 +86,7 @@
 			</div><!-- div.grid -->
 					<?php echo $total_history;?>
 					<br />
-					<table class="table bordered striped" id="history_data">
+					<table class="table hovered" id="history_data">
 						<thead>
 							<tr>
 								<th>รูป</th>
