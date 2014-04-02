@@ -19,11 +19,12 @@ $config['base_url']	= 'http://172.168.0.184/sala2/';
 /*
  * Base assets URL
  */ 
-$config['base_assets'] = 'http://172.168.0.184/sala2/assets/';
-$config['base_assets_images'] = 'http://172.168.0.184/sala2/assets/images/';
-$config['base_history_image'] = 'http://172.168.0.184/sala2/assets/images/history/';
-$config['base_history_thumbs'] = 'http://172.168.0.184/sala2/assets/images/history/thumbs/';
-$config['base_history_attachment'] = 'http://172.168.0.184/sala2/assets/uploads/files/';
+
+$config['base_assets'] = $config['base_url'].'assets/';
+$config['base_assets_images'] = $config['base_url'].'assets/images/';
+$config['base_history_image'] = $config['base_url'].'assets/images/history/';
+$config['base_history_thumbs'] = $config['base_url'].'assets/images/history/thumbs/';
+$config['base_history_attachment'] = $config['base_url'].'assets/uploads/files/';
 
 
 //server path

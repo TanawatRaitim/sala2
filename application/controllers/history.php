@@ -253,40 +253,7 @@ class History extends CI_Controller {
 
 	public function test()
 	{
-		
-		$query = $this->db->get('history');
-		$result = $query->result_array();
-		echo '<pre>';
-		//print_r($result);
-		echo '</pre>';
-		//echo $result[0]['create_date'];
-		//echo $result[3000]['create_date'];
-		
-		$current_date =  date('Y-m-d');
-		$current_date = strtotime($current_date);
-		
-		// echo $current_date;
-		
-		$date1 = date(strtotime('2014-01-01'));
-		// $date2 = date(strtotime('2012-12-31'));
-		//echo $date1;
-		
-		$difference = $current_date - $date1;
-		
-		// echo $difference;
-		
-		
-		$months = floor($difference / 86400 / 30 );
-		
-		echo "current date = ".$current_date;
-		echo '<br />';
-		echo "date to diff = ".$date1;
-		echo '<br />';
-		
-		
-		echo "diff=".$months."months";
-		
-				
+		echo $this->config->item('base_assets_images');
 	}
 	
 }
