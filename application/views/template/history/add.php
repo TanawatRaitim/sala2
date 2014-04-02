@@ -186,6 +186,12 @@
 					contact_country:{
 						min:1
 					},
+					history_img:{
+						extension: "jpg|png|jpeg|gif"
+					},
+					history_attachment:{
+						extension: "jpg|png|jpeg|pdf"
+					},
 					history_volume:{
 						digits: true,
 						remote: {
@@ -227,6 +233,13 @@
 						required: " "
 						//email: "Please enter a valid email address, example: you@yourdomain.com",
 						//remote: jQuery.validator.format("{0} is already taken, please enter a different address.")
+					},
+					history_img:{
+						extension: "สามารถ Upload รูปภาพได้เฉพาะไฟล์นามกสุล '.jpg', '.jpeg','.png', '.gif' เท่านั้น"
+					},
+					history_attachment:{
+						//jpg|png|jpeg|pdf
+						extension: "สามารถ Upload รูปภาพได้เฉพาะไฟล์นามกสุล '.jpg', '.png','.jpeg', '.pdf' เท่านั้น"
 					}
 				},
 				// debug:true

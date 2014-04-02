@@ -15,16 +15,11 @@
     <script src="<?php echo $this->config->item('base_assets'); ?><?php echo $this->config->item('jquery_validation'); ?>"></script>
     <script src="<?php echo $this->config->item('base_assets'); ?><?php echo $this->config->item('jquery_validation_additional'); ?>"></script>
     <script src="<?php echo $this->config->item('base_assets'); ?><?php echo $this->config->item('alertify_js'); ?>"></script>
-
     <title><?php echo $title; ?></title>
     <script>
 		$(function(){
-			
 			$("#cancel").click(function(e){
 				e.preventDefault();
-				//alert('cancel');
-				//return true;
-				
 				alertify.set({buttonReverse: true});
 				alertify.set({ labels: {
 				    ok     : "ตกลง",
@@ -66,7 +61,6 @@
 				$("#contact_province").val($("#member_province").val()).effect("highlight","slow");
 				$("#contact_postcode").val($("#member_postcode").val()).effect("highlight","slow");
 				$("#contact_country").val($("#member_country").val()).effect("highlight","slow");
-
 			});
 			
 			$.datepicker.regional['th'] ={
@@ -84,7 +78,6 @@
 		    };
 		
 		    $.datepicker.setDefaults($.datepicker.regional['th']);
-			
 			$( "#dob" ).datepicker( $.datepicker.regional["th"] );   // บอกให้ใช้ Propertie ภาษาที่เรานิยามไว้
     		$( "#dob" ).datepicker();                                 //Innit DatePicker ไปที่ Control ที่มี ID = datepicker
 			
@@ -103,7 +96,6 @@
 			jQuery.validator.messages.required = "";
 			jQuery.validator.messages.min = "";
 			
-			
 			$("#form_edit_member").validate({
 				invalidHandler: function(e, validator) {
 
@@ -120,7 +112,6 @@
 					
 					//alert('กรุณาตรวจสอบข้อมูล');
 					$("html, body").animate({ scrollTop: 100 }, "fast");//new
-					
 				},
 				//errorClass: "error-state",
 				//validClass: "",
@@ -147,7 +138,6 @@
 					        return false;
 					    }
 					});
-					
 				},
 				rules:{
 					history_book: {
@@ -175,6 +165,12 @@
 					},
 					contact_country:{
 						min:1
+					},
+					history_img:{
+						extension: "jpg|png|jpeg|gif"
+					},
+					history_attachment:{
+						extension: "jpg|png|jpeg|pdf"
 					},
 					history_volume:{
 						digits: true,
@@ -219,13 +215,17 @@
 						required: " "
 						//email: "Please enter a valid email address, example: you@yourdomain.com",
 						//remote: jQuery.validator.format("{0} is already taken, please enter a different address.")
+					},
+					history_img:{
+						extension: "สามารถ Upload รูปภาพได้เฉพาะไฟล์นามสกุล '.jpg', '.jpeg','.png', '.gif' เท่านั้น"
+					},
+					history_attachment:{
+						//jpg|png|jpeg|pdf
+						extension: "สามารถ Upload รูปภาพได้เฉพาะไฟล์นามสกุล '.jpg', '.png','.jpeg', '.pdf' เท่านั้น"
 					}
 				},
 				// debug:true
 			});
-			
-
-			
 		});
 		
 	</script>
@@ -280,7 +280,6 @@
 									<?php endif;?>
 								</td>
 							</tr>
-							
 							<tr>
 								<td class="text-right"><strong>รหัสบัตรประชาชน : </strong></td>
 								<td><?php echo $member_info[0]['idcard'];?></td>
@@ -298,7 +297,6 @@
 									<?php echo $member_info[0]['postcode'];?>
 								</td>
 							</tr>
-							
 						</table>
 					</div>
 					<div class="span4 shadow">
@@ -330,7 +328,6 @@
 					</div>
 				</div>
 			</div><!-- div.grid -->
-			
 			
 			<div class="grid">
 				<div class="row">
@@ -386,7 +383,6 @@
 					</div>
 				</div>
 			</div><!-- div.grid -->
-			
 			
 			<div class="grid">
 				<div class="row">
@@ -490,7 +486,6 @@
 								<tr class="selected">
 									<td class="table-label">อื่นๆ</td>
 									<td class="table-input" colspan="7"><input type="text" size="40" name="contact_social_other" id="contact_social_other" value="<?php echo $contact_info[0]['social_other'];?>" /></td>
-									
 								</tr>
 							</tbody>
 						</table>
@@ -691,13 +686,6 @@
 				</div>
 			</div>
 		</form>
-		
-		<pre>
-			<?php 
-			//print_r($this->session->userdata);
-			 ?>
-		</pre>
-		
 	</div> <!-- end div.container -->
 
 </body>
