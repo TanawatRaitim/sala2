@@ -13,6 +13,21 @@ header("Content-Disposition: attachment; filename=sala_export.doc");
     <title><?php echo $title; ?></title>
 </head>
 <body>
+	
+	ดึงข้อมูลจากหนังสือ  : <?php echo $book_name;?> 
+	<br />
+	เล่มที่   : <?php echo $volume;?> 
+	<br />
+	คอลัมน์  : <?php echo $issue_name;?>
+	<br />
+	ดึงข้อมูลเมื่อวันที่  : <?php echo $date_export;?>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	
+	
 	<?php foreach ($result->result_array() as $rows): ?>
 	
 	<?php if($rows['image']):?>

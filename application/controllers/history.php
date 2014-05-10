@@ -186,7 +186,6 @@ class History extends CI_Controller {
 			{
 				redirect('','refresh');
 			}else{
-				// redirect("main/index/".$this->session->userdata('page_main'),'refresh');
 				redirect($this->session->userdata('previous_url'),'refresh');
 			}
 			
@@ -230,8 +229,8 @@ class History extends CI_Controller {
 	{
 		
 		$this->load->model('member_model');
+		$this->load->helper('utility_helper');
 		$this->data['title'] = 'export';
-		
 		
 		$book = $this->input->post('book_export');
 		$issue = $this->input->post('issue_export');
@@ -246,6 +245,11 @@ class History extends CI_Controller {
 		//file name
 		//export
 		$this->data['filename'] = 'export_data';
+		$this->data['date_export'] = date('d-m-Y');
+		$this->data['book_name'] = get_book_name($book);
+		$this->data['issue_name'] = get_issue_name($issue);
+		$this->data['volume'] = $volume;
+
 		
 		$this->load->view('template/history/export_word',$this->data);
 		
@@ -253,7 +257,11 @@ class History extends CI_Controller {
 
 	public function test()
 	{
-		echo $this->config->item('base_assets_images');
+		$id = 2;
+		//echo $this->config->item('base_assets_images');
+		$this->load->helper('utility_helper');
+		get_issue_name($id);
+		
 	}
 	
 }

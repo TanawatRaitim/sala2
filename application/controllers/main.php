@@ -75,6 +75,8 @@ class Main extends CI_Controller {
 	{
 		$this->load->model('member_model');
 		
+		
+		
 		if(!($keyword) && !($this->input->post('keyword')))
 		{
 			redirect('');
@@ -86,7 +88,17 @@ class Main extends CI_Controller {
 			}	
 		}
 		
+		//echo $keyword;
+		
+		
+		
 		$this->data['keyword'] = $keyword;
+		
+		
+		//print_r($_POST);
+		//echo $this->data['keyword'];
+		//exit;
+		
 		$this->data['title'] = 'หน้าหลัก';
 		
 /********************************        config pagination    ********************/		
@@ -117,17 +129,24 @@ class Main extends CI_Controller {
 		$previous_url = uri_string();
 		$explode = explode('/',$previous_url);
 		
+		
 		//no keyword in uri
 		if(count($explode) == 2)
 		{
-			$previous_url = $previous_url."/".$keyword;
+			$previous_url = $previous_url."/".urldecode($keyword);
 		}
+		
+		
 		
 		$this->session->set_userdata('previous_url',$previous_url);
 		
 		$this->data['total_rows'] = $config['total_rows'];
 		$this->data['rows_text'] = 'พบรายการทั้งหมด '.$config['total_rows']." รายการ สำหรับการค้นหา '".urldecode($keyword)."'" ;
 		
+		
+		//echo $keyword;
+		
+		//exit();
 		
 /**********************************end config pagination*******************************************************************/		
 		$this->load->view('template/main',$this->data);

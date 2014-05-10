@@ -35,6 +35,8 @@ class Auth extends CI_Controller {
 		//load helper language
 		$this->load->helper('language');
 		// $this->config->load('scripts');
+
+		
 	}
 
 	//redirect if needed, otherwise display the user list
